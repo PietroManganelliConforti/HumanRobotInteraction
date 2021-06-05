@@ -45,17 +45,10 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-        // The robot focus is gained.
-        //Say say = SayBuilder.with(qiContext) // Create the builder with the context.
-        //        .withText("Hello human!!") // Set the text to say.
-        //        .build(); // Build the say action.
-        //// Execute the action.
-        //say.run();
-        PhraseSet phraseSet = PhraseSetBuilder.with(qiContext)
-                .withTexts("Hello", "Hi")
-                .build();
+
+
         Topic topic = TopicBuilder.with(qiContext) // Create the builder using the QiContext.
-                .withResource(R.raw.hello) // Set the topic resource.
+                .withResource(R.raw.intro) // Set the topic resource.
                 .build(); // Build the topic.
         QiChatbot qiChatbot = QiChatbotBuilder.with(qiContext)
                 .withTopic(topic)
@@ -74,28 +67,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                 Log.e(TAG, "Discussion finished with error.", future.getError());
             }
         });
-        // Create the PhraseSet 1.
-        //PhraseSet phraseSetYes = PhraseSetBuilder.with(qiContext) // Create the builder using the QiContext.
-        //        .withTexts("yes", "OK", "alright", "let's do this") // Add the phrases Pepper will listen to.
-        //        .build(); // Build the PhraseSet.
 
-        // Create the PhraseSet 2.
-        //PhraseSet phraseSetNo = PhraseSetBuilder.with(qiContext) // Create the builder using the QiContext.
-        //        .withTexts("no", "Sorry", "I can't") // Add the phrases Pepper will listen to.
-        //        .build(); // Build the PhraseSet.
-
-        //Listen listen = ListenBuilder.with(qiContext)
-        //        .withPhraseSets(phraseSetYes, phraseSetNo)
-        //        .build();
-        //ListenResult listenResult = listen.run();
-
-        //Log.i(TAG, "Heard phrase: " + listenResult.getHeardPhrase().getText()); // Prints "Heard phrase: forwards".
-        //PhraseSet matchedPhraseSet = listenResult.getMatchedPhraseSet();
-        //if (PhraseSetUtil.equals(matchedPhraseSet, phraseSetYes)) {
-        //    Log.i(TAG, "Heard phrase set: yes");
-        //} else if (PhraseSetUtil.equals(matchedPhraseSet, phraseSetNo)) {
-        //    Log.i(TAG, "Heard phrase set: no");
-        //}
     }
 
     @Override
