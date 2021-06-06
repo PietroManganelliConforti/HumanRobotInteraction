@@ -5,18 +5,23 @@ topic: ~intro()
 # Replying to speech
 #u:(~hello) ~hello
 concept:(introduction) ^rand[hello hi hey "good morning"]
-concept:(info) ["can you give me more info" "can you give me more info please" "tell me more about it" "what privacy enforcement program?" explain]
+concept:(info) ["can you give me more info" "can you give me more info please" "tell me more about it" "what privacy enforcement program?" explain info]
 concept:(confirm) [yes "yes please" "would be awesome" confirm "of course"]
 concept:(rejection) [no "I don't care" "leave me be"]
 
-%restart u:(~introduction) ~introduction ^nextProposal
+ proposal: %restart ^empty
+ u:(~introduction) ~introduction ^enableThenGoto(labeltest)
 
-    proposal: Do you want to be registered in our system for my privacy enforcement program?
+    proposal: %labeltest Do you want to be registered in our system for my privacy enforcement program?
+    u1:(e:Dialog/NotUnderstood) What did you say? Parla come magni! ^enableThenGoto(labeltest)
     u1:(~confirm) ok cool! ^nextProposal
     u1:(~info) %information I'm part of a privacy enforcement program to ensure your privacy to be kept safe when being in a video call. If you allow me I can guide you with some questions to help you feel safer when being in a videocall, blurring all the thing you don't want to show. How about that? Are you interested?
+        u2:(e:Dialog/NotUnderstood) What did you say? Parla come magni! ^enableThenGoto(information)
         u2:(~confirm) ok cool! ^nextProposal
-        u2:(~rejection) ok sorry to have bothered you, have a nice day! ^goto(restart)
-    u1:(~rejection) ok. If I may ask, is it because you don't know about it or because you don't want to? I can explain it to you if you want!
-        u2:(~rejection) ok sorry to have bothered you, have a nice day! ^goto(restart)
-        u2:(~info) ^goto(information)
+        u2:(~rejection) ok sorry to have bothered you, have a nice day! ^enableThenGoto(restart)
+    u1:(~rejection) %rejection ok. If I may ask, is it because you don't know about it or because you don't want to? I can explain it to you if you want!
+        u2:(e:Dialog/NotUnderstood) What did you say? Parla come magni! ^enableThenGoto(rejection)
+        u2:(~rejection) ok sorry to have bothered you, have a nice day! ^enableThenGoto(restart)
+        u2:(~info) ^enableThenGoto(information)
 
+    proposal: WIP
