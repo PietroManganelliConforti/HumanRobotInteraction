@@ -11,17 +11,17 @@ concept:(confirm) [yes "yes please" "would be awesome" confirm "of course"]
 concept:(rejection) [no "I don't care" "leave me be"]
 
  proposal: %restart ^empty #stiamo dando per scontato che l'utente faccia sempre eyecontact
- u:(~hipepper) ~introduction ^enableThenGotoInTopic(facerecogn, facerecognition)#^enableThenGoto(labeltest)
+ u:(~hipepper) ~introduction ^enableThenGoto(labeltest)
 
     proposal: %labeltest Do you want to be registered in our system for my privacy enforcement program?
-    u1:(e:Dialog/NotUnderstood) What did you say? Parla come magni! ^enableThenGoto(labeltest)
-    u1:(~confirm) ok cool! #^gotoInTopic(facerecogn, facerecognition)
+    u1:(e:Dialog/NotUnderstood) What did you say? Can you repeat,please? ^enableThenGoto(labeltest)
+    u1:(~confirm) ok cool! ^gotoInTopic(facerecogn, facerecognition)
     u1:(~info) %information I'm part of a privacy enforcement program to ensure your privacy to be kept safe when being in a video call. If you allow me I can guide you with some questions to help you feel safer when being in a videocall, blurring all the thing you don't want to show. How about that? Are you interested?
-        u2:(e:Dialog/NotUnderstood) What did you say? Parla come magni! ^enableThenGoto(information)
-        u2:(~confirm) ok cool! #^gotoInTopic(facerecogn, facerecognition)
+        u2:(e:Dialog/NotUnderstood) What did you say? Can you repeat,please? ^enableThenGoto(information)
+        u2:(~confirm) ok cool! ^gotoInTopic(facerecogn, facerecognition)
         u2:(~rejection) ok sorry to have bothered you, have a nice day! ^enableThenGoto(bridge)
     u1:(~rejection) %rejection ok. If I may ask, is it because you don't know about it or because you don't want to? I can explain it to you if you want!
-        u2:(e:Dialog/NotUnderstood) What did you say? Parla come magni! ^enableThenGoto(rejection)
+        u2:(e:Dialog/NotUnderstood) What did you say? Can you repeat,please? ^enableThenGoto(rejection)
         u2:(~rejection) ok sorry to have bothered you, have a nice day! ^enableThenGoto(bridge)
         u2:(~info) ^enableThenGoto(information)
  proposal:%bridge Hey, I see you looked at me. tell me "Hi Pepper" to start the conversation! ^enableThenGoto(restart)

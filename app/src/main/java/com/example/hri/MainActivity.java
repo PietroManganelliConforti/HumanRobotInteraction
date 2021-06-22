@@ -64,13 +64,8 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                 .withResource(R.raw.facerecognition) // Set the topic resource.
                 .build(); // Build the topic.
 
-        //List<?extends Topic> listTopic =new ArrayList<?extends Topic>(topicFaceRecogn, topicIntro);
-        //QiChatbot qiChatbot = QiChatbotBuilder.with(qiContext)
-        //        .withTopics(listTopic)
-        //        .build();
-
         QiChatbot qiChatbot = QiChatbotBuilder.with(qiContext)
-                .withTopic(topicIntro)
+                .withTopic(topicIntro, topicFaceRecogn)
                 .build();
 
 
