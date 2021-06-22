@@ -1,0 +1,6 @@
+topic: ~facerecognition()
+# Defining extra concepts out of words or group of words
+#concept:(hello) [hello hi hey "good morning" greetings]
+
+# Replying to speech
+proposal: %facerecogn Hi before weefvkjdfvnldfs
