@@ -1,6 +1,28 @@
 topic: ~facerecognition()
 # Defining extra concepts out of words or group of words
-#concept:(hello) [hello hi hey "good morning" greetings]
+
+concept:(confirm) [yes "yes please" "would be awesome" confirm "of course"]
+concept:(rejection) [no "I don't care" "leave me be"]
 
 # Replying to speech
-proposal: %facerecogn Hi before weefvkjdfvnldfs
+proposal: %facerecogn before I ask you all the specifics for our program, I'd like to know if you
+                      want me to remember your face for the next time, in order to help each other update your information
+                      in a smoother way. What do you say?
+    u1:(~confirm) %confirmation Ok cool! ^enableThenGoto(facerecognition)
+    u1:(~rejection) %repeatquestion ok. Remember that if you want to update any privacy information for my privacy enforcement program, the next time
+                    you will have to repeat the process all over again. Are you sure you don't want me to remember your face?
+        u2:(~confirm) %continue ok, let's continue then. ^enableThenGotoInTopic(startInitialize,initializebuildlistobj)
+        u2:(~rejection) %decline ok, so do you confirm you want to me to remember your face for the next time?
+             u3:(~confirm) ^enableThenGoto(confirmation)
+             u3:(~rejection) Then I'll not save your face in my memory. ^enableThenGoto(continue)
+             u3:(e:Dialog/NotUnderstood) What did you say? Can you repeat,please? ^enableThenGoto(decline)
+        u2:(e:Dialog/NotUnderstood) What did you say? Can you repeat,please? ^enableThenGoto(repeatquestion)
+
+    u1:(e:Dialog/NotUnderstood) What did you say? Can you repeat,please? ^enableThenGoto(facerecogn)
+
+
+
+
+proposal: %facerecognition To allow me to remember your face, I have to ask you to look me in the eyes
+                            for a couple of seconds. Please hold still...WIPexecutionAnimation -- ok now
+                             I'll remember your face for the next time! Neat! ^enableThenGotoInTopic(startInitialize,initializebuildlistobj) #^execute()

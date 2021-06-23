@@ -1,0 +1,24 @@
+topic: ~initializebuildlistobj()
+# Defining extra concepts out of words or group of words
+#concept:(hello) [hello hi hey "good morning" greetings]
+concept:(confirm) [yes "yes please" "would be awesome" confirm "of course" "yes they are"]
+concept:(rejection) [no "I don't care" "leave me be" "no they aren't" "I can't"]
+concept:(room) [kitchen bathroom office bedroom hall dining room wardrobe garden "my office"]
+concept:(letsgo) ["let's go " now "ok follow me" follow]
+concept:(stop) ["stop" "stop registration" "stop the registration" no "leave me be"]
+# Replying to speech
+#u:(~hello) ~hello
+
+proposal: %startInitialize Now, I'd like to register the objects that you would like to
+                        blur out during a video call. Let me explain it how this process works!
+                        Since this is the first time I'm registering your list as a user, I will need
+                        to see these objects that you want to blur out in the future. Are they around us at the moment?
+    u1:(~confirm)  Ok cool! ^enableThenGotoTopic(buildlist,buildlistobj)
+    u1:(~rejection)  I see. In which room are these objects?
+        u2:(~room) Ok. Can you take me there so I can recognize and remember them for the future? #todo simbolo dollaro $
+            u3:(~confirm) %letsgo Ok, you drive! ^enableThenGotoTopic(buildlist,buildlistobj) #execute animation
+            u3:(~rejection) Ok. Sadly, this is an fundamental step for my privacy program, thus I cannot continue the registering
+                            if we cannot go into that room. Want to go now or do you want to stop the registration?
+                u4:(~stop) Ok, then maybe it will be for another day. See you around! ^enableThenGotoInTopic(bridge,intro)
+                u4:(~letsgo) Thanks for understanding that. ^enableThenGoto(letsgo)
+
