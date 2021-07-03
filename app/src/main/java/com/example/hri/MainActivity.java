@@ -32,19 +32,24 @@ import java.util.List;
 public class MainActivity extends RobotActivity implements RobotLifecycleCallbacks {
     private static final String TAG = "MyActivity";
     private Chat chat;
-    private QiChatVariable faceRecognition;
-    private String recognized_or_not = "0"; //1 riconosciuto, 0 no
+    private QiChatVariable faceRecognitionVar;
+    private QiChatVariable variable;
+
+    //private String recognized_or_not = "0"; //1 riconosciuto, 0 no
+
     private void assignVariable(String value) {
         // Set the value.
-        faceRecognition.async().setValue(value);
+        faceRecognitionVar.async().setValue(value);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Register the RobotLifecycleCallbacks to this Activity.
+
         QiSDK.register(this, this);
-        //(assignVariable(recognized_or_not);
+
+
 
 
     }
@@ -91,13 +96,18 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                 .build();
 
 
+        variable = qiChatbot.variable("faceRecognitionVar");
+        variable.async().setValue("TEST_VAR");
 
         say.run();
 
 
+        //Log.i(String.valueOf(variable), "test:");
+
         chat = ChatBuilder.with(qiContext)
                 .withChatbot(qiChatbot)
                 .build();
+
         chat.addOnStartedListener(() -> Log.i(TAG, "Discussion started."));
         if (chat != null) {
             chat.removeAllOnStartedListeners();

@@ -5,7 +5,7 @@ concept:(confirm) [yes "yes please" "would be awesome" confirm "of course"]
 concept:(rejection) [no "I don't care" "leave me be"]
 
 # Replying to speech
-proposal: %facerecogn test $faceRecognition before I ask you all the specifics for our program, I'd like to know if you
+proposal: %facerecogn before I ask you all the specifics for our program, I'd like to know if you
                       want me to remember your face for the next time, in order to help each other update your information
                       in a smoother way. What do you say?
     u1:(~confirm) %confirmation Ok cool! ^enableThenGoto(facerecognition)
