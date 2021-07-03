@@ -19,6 +19,7 @@ import com.aldebaran.qi.sdk.object.conversation.Chat;
 import com.aldebaran.qi.sdk.object.conversation.Listen;
 import com.aldebaran.qi.sdk.object.conversation.ListenResult;
 import com.aldebaran.qi.sdk.object.conversation.PhraseSet;
+import com.aldebaran.qi.sdk.object.conversation.QiChatVariable;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
@@ -31,23 +32,34 @@ import java.util.List;
 public class MainActivity extends RobotActivity implements RobotLifecycleCallbacks {
     private static final String TAG = "MyActivity";
     private Chat chat;
+    private QiChatVariable faceRecognition;
+    private String recognized_or_not = "0"; //1 riconosciuto, 0 no
+    private void assignVariable(String value) {
+        // Set the value.
+        faceRecognition.async().setValue(value);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Register the RobotLifecycleCallbacks to this Activity.
         QiSDK.register(this, this);
+        //(assignVariable(recognized_or_not);
+
 
     }
 
     @Override
     protected void onDestroy() {
         // Unregister the RobotLifecycleCallbacks for this Activity.
-        QiSDK.unregister(this, this);
         super.onDestroy();
+        QiSDK.unregister(this, this);
     }
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
+
+
 
         Say say = SayBuilder.with(qiContext) // Create the builder with the context.
                 .withText("Hey, you got my attention. tell me \"Hi Pepper\" to start the conversation!") // Set the text to say.
@@ -63,7 +75,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                 .withResource(R.raw.facerecognition) // Set the topic resource.
                 .build(); // Build the topic.
 
- //questi due topic, se aggiunti, non fanno funzionare il dialogo. Il facerecognition si. Probabile problema di flag?
 
         Topic topicBuildList = TopicBuilder.with(qiContext) // Create the builder using the QiContext.
                 .withResource(R.raw.buildlistobj) // Set the topic resource.
@@ -75,13 +86,10 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
 
 
-
-
         QiChatbot qiChatbot = QiChatbotBuilder.with(qiContext)
                 .withTopic(topicIntro, topicFaceRecogn, topicInitialize, topicBuildList)
                 .build();
 
-        System.out.println("aaaaa");
 
 
         say.run();
