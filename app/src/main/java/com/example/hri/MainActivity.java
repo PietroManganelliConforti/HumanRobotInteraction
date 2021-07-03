@@ -63,21 +63,26 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                 .withResource(R.raw.facerecognition) // Set the topic resource.
                 .build(); // Build the topic.
 
-/*
  //questi due topic, se aggiunti, non fanno funzionare il dialogo. Il facerecognition si. Probabile problema di flag?
+
+        Topic topicBuildList = TopicBuilder.with(qiContext) // Create the builder using the QiContext.
+                .withResource(R.raw.buildlistobj) // Set the topic resource.
+                .build(); // Build the topic.
 
         Topic topicInitialize = TopicBuilder.with(qiContext) // Create the builder using the QiContext.
                 .withResource(R.raw.initializebuildlistobj) // Set the topic resource.
                 .build(); // Build the topic.
 
-        Topic topicBuildList = TopicBuilder.with(qiContext) // Create the builder using the QiContext.
-                .withResource(R.raw.buildlistobj) // Set the topic resource.
-                .build(); // Build the topic.
-*/
+
+
+
 
         QiChatbot qiChatbot = QiChatbotBuilder.with(qiContext)
-                .withTopic(topicIntro, topicFaceRecogn)//, topicInitialize)//, topicBuildList)
+                .withTopic(topicIntro, topicFaceRecogn, topicInitialize, topicBuildList)
                 .build();
+
+        System.out.println("aaaaa");
+
 
         say.run();
 
