@@ -32,15 +32,11 @@ import java.util.List;
 public class MainActivity extends RobotActivity implements RobotLifecycleCallbacks {
     private static final String TAG = "MyActivity";
     private Chat chat;
-    private QiChatVariable faceRecognitionVar;
-    private QiChatVariable variable;
+    //private QiChatVariable faceRecognitionVar, StopVar;
+    private QiChatVariable variable_face,var_stop1;
 
     //private String recognized_or_not = "0"; //1 riconosciuto, 0 no
 
-    private void assignVariable(String value) {
-        // Set the value.
-        faceRecognitionVar.async().setValue(value);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +44,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         // Register the RobotLifecycleCallbacks to this Activity.
 
         QiSDK.register(this, this);
-
-
-
 
     }
 
@@ -63,7 +56,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
-
 
 
         Say say = SayBuilder.with(qiContext) // Create the builder with the context.
@@ -95,12 +87,17 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                 .withTopic(topicIntro, topicFaceRecogn, topicInitialize, topicBuildList)
                 .build();
 
+        //VAR face recognition, anything but 0 if recognized, 0 if not
+        variable_face = qiChatbot.variable("faceRecognitionVar");
+        variable_face.async().setValue("0");
 
-        variable = qiChatbot.variable("faceRecognitionVar");
-        variable.async().setValue("TEST_VAR");
+        //VAR face recognition, anything but 0 if recognized, 0 if not
+        var_stop1 = qiChatbot.variable("StopVar");
+        var_stop1.async().setValue( String.valueOf(  (int)(Math.random() * 10)   ) );
+
+        //Log.i(String.valueOf(Math.random()), "Discussion started.");
 
         say.run();
-
 
         //Log.i(String.valueOf(variable), "test:");
 
