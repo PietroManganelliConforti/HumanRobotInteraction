@@ -12,7 +12,7 @@ proposal: %buildlist Now I'll scan the room. Give me a minute... ---scanning--- 
                      Which among these you want to blur out? You can select them by clicking. If you are ok with the objects I found, select them and tell me
                       'I've finished' when you are done or click on the Ok button, otherwise ask me to repeat the scan.
 
-    u1:(~finish) Thanks for cooperationg. From now on you are part of the privacy program. You can update the list of objects
+    u1:(~finish) Thanks for the cooperation. From now on you are part of the privacy program. You can update the list of objects
                  at anytime! Come talk to me if you want to. Can I ask you to leave a feedback answering a short survey to
                  improve my services for the future?
         u2:(~confirm) Thanks! #^gotoInTopic(feedback)
@@ -23,4 +23,4 @@ proposal: %buildlist Now I'll scan the room. Give me a minute... ---scanning--- 
                  the knowledge of the item you are trying to blur out. If that's the case, please report it through the
                  feedback survey saying 'Pepper I want to send a feedback'.
                 u2:(~repeat) ^enableThenGoto(buildlist)
-                u2:(~feedback) WIP #^gotoInTopic(feedback)
+                u2:(~feedback) WIP #^gotoInTopic(feedback)  #TODO QR in a new topic
