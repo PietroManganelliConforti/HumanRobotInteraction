@@ -8,6 +8,8 @@ concept:(feedback) [feedback "I want to send a feedback" "Pepper I want to send 
 # Replying to speech
 #u:(~hello) ~hello
 
+#proposal: Are we arrived?
+
 proposal: %buildlist Now I'll scan the room. Give me a minute... ---scanning--- Ok! The list of objects I detected are listed on my display.
                      Which among these you want to blur out? You can select them by clicking. If you are ok with the objects I found, select them and tell me
                       'I've finished' when you are done or click on the Ok button, otherwise ask me to repeat the scan.
