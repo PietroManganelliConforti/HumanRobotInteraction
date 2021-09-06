@@ -38,6 +38,8 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     //private String recognized_or_not = "0"; //1 riconosciuto, 0 no
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +112,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
             chat.removeAllOnStartedListeners();
         }
         Future<Void> chatFuture = chat.async().run();
+        
         chatFuture.thenConsume(future -> {
             if (future.hasError()) {
                 Log.e(TAG, "Discussion finished with error.", future.getError());
