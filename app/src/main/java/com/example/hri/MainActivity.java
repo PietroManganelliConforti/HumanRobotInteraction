@@ -31,9 +31,10 @@ import java.util.List;
 
 public class MainActivity extends RobotActivity implements RobotLifecycleCallbacks {
     private static final String TAG = "MyActivity";
+    private static final String TAG_EVENTS = "EventsInfo";
     private Chat chat;
     //private QiChatVariable faceRecognitionVar, StopVar;
-    private QiChatVariable variable_face,var_stop1;
+    private QiChatVariable variable_face,var_stop1,var_stop2,var_stop3,var_stop4;
 
     //private String recognized_or_not = "0"; //1 riconosciuto, 0 no
 
@@ -94,14 +95,28 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         variable_face.async().setValue("0");
 
         //VAR face recognition, anything but 0 if recognized, 0 if not
-        var_stop1 = qiChatbot.variable("StopVar");
-        var_stop1.async().setValue( String.valueOf(  (int)(Math.random() * 10)   ) );
+        var_stop1 = qiChatbot.variable("StopVar1");
+        var_stop1.async().setValue( "0" ); //(int)(Math.random() * 10) doesn't work, why?
 
+        //VAR face recognition, anything but 0 if recognized, 0 if not
+        var_stop2 = qiChatbot.variable("StopVar2");
+        var_stop2.async().setValue( String.valueOf(  (int)(Math.random() * 10)   ) );
+
+        //VAR face recognition, anything but 0 if recognized, 0 if not
+        var_stop3 = qiChatbot.variable("StopVar3");
+        var_stop3.async().setValue( String.valueOf(  (int)(Math.random() * 10)   ) );
+
+        //VAR face recognition, anything but 0 if recognized, 0 if not
+        var_stop4 = qiChatbot.variable("StopVar4");
+        var_stop4.async().setValue( String.valueOf(  (int)(Math.random() * 10)   ) );
         //Log.i(String.valueOf(Math.random()), "Discussion started.");
 
         say.run();
 
-        //Log.i(String.valueOf(variable), "test:");
+        Log.i( TAG_EVENTS, "var_stop1: "+ var_stop1.getValue());
+        Log.i( TAG_EVENTS, "var_stop2: "+ var_stop2.getValue());
+        Log.i( TAG_EVENTS, "var_stop3: "+ var_stop3.getValue());
+        Log.i( TAG_EVENTS, "var_stop4: "+ var_stop4.getValue());
 
         chat = ChatBuilder.with(qiContext)
                 .withChatbot(qiChatbot)
@@ -130,4 +145,5 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     public void onRobotFocusRefused(String reason) {
         // The robot focus is refused.
     }
+
 }
