@@ -109,10 +109,10 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         //VAR i see you are talking with someone else
         var_stop2 = qiChatbot.variable("StopVar2");
         double rand = Math.random();
-        var_stop2.async().setValue("0");
-        if(rand >= 0.25 && rand < 0.5) {var_stop2.async().setValue("1");}
-        if(rand >= 0.5 && rand < 0.75) {var_stop2.async().setValue("2");}
-        if(rand >= 0.75) {var_stop2.async().setValue("3");}
+        var_stop2.async().setValue("1"); //0 is for the default case
+        if(rand >= 0.25 && rand < 0.5) {var_stop2.async().setValue("2");}
+        if(rand >= 0.5 && rand < 0.75) {var_stop2.async().setValue("3");}
+        if(rand >= 0.75) {var_stop2.async().setValue("4");}
 
         //VAR pepper is unable to follow the user
         var_stop3 = qiChatbot.variable("StopVar3");
@@ -164,10 +164,10 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                            QiChatVariable e3,QiChatVariable e4,
                            QiChatVariable eFace){
         e1.async().setValue("1");
-        e2.async().setValue("1");
+        e2.async().setValue("4");
         e3.async().setValue("1");
         e4.async().setValue("1");
-        eFace.async().setValue("1");
+        eFace.async().setValue("0");
     }
 
     @Override
