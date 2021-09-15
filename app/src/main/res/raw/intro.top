@@ -25,7 +25,7 @@ proposal: %group_restart  $StopVar1=0 As i can see you are a group of people! Pl
 proposal: %restart_2 ^empty #stiamo dando per scontato che l'utente faccia sempre eyecontact
     u:(~hipepper) running face recognition module.
                   Checking for a match in our database,
-                  please wait... ^first["~introduction ^enableThenGoto(notremebered) $faceRecognitionVar==0" "~welcomeback ^enableThenGoto(remember)"]
+                  please wait...  ^execute(FaceRecognitionExecutor) ^first["~introduction ^enableThenGoto(notremebered) $faceRecognitionVar==0" "~welcomeback ^enableThenGoto(remember)"]
     u:(~hipepper $StopVar1==1) ^enableThenGoto(group_restart)
 
 proposal: $StopVar1 $StopVar2 $StopVar3 $StopVar4 %remember Do you remember my privacy enforcement program? Do you want me to refresh your memory about it or not?
