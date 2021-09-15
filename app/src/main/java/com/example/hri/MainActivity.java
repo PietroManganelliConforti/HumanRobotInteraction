@@ -60,7 +60,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
 
-
         Say say = SayBuilder.with(qiContext) // Create the builder with the context.
                 .withText("Hey, you got my attention. tell me \"Hi Pepper\" to start the conversation!") // Set the text to say.
                 .build(); // Build the say action.
@@ -89,6 +88,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         QiChatbot qiChatbot = QiChatbotBuilder.with(qiContext)
                 .withTopic(topicIntro, topicFaceRecogn, topicInitialize, topicBuildList)
                 .build();
+
 
         //VAR face recognition, anything but 0 if recognized, 0 if not
         variable_face = qiChatbot.variable("faceRecognitionVar");

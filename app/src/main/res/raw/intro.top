@@ -19,14 +19,16 @@ concept:(stillInt) ["...hey are you still interested? i see you are talking to s
  # come forward and repeat hi pepper.^enableThenGoto(restart) $StopVar1>0" "^enableThenGoto(restart)"]
  #
 
-proposal: %group_restart  $StopVar1=0 As i can see you are a group of people! Please, if someone wants to speak with me come forward and repeat hi pepper.
-    u:(~hipepper) ^enableThenGoto(restart_2)
+#proposal: %group_restart  $StopVar1=0 As i can see you are a group of people! Please, if someone wants to speak with me come forward and repeat hi pepper.
+#    u:(~hipepper) ^enableThenGoto(restart_2)
 
 proposal: %restart_2 ^empty #stiamo dando per scontato che l'utente faccia sempre eyecontact
-    u:(~hipepper) running face recognition module.
-                  Checking for a match in our database,
-                  please wait... ^first["~introduction ^enableThenGoto(notremebered) $faceRecognitionVar==0" "~welcomeback ^enableThenGoto(remember)"]
-    u:(~hipepper $StopVar1==1) ^enableThenGoto(group_restart)
+        u:(~hipepper $StopVar1==1)  $StopVar1=0 As i can see you are a group of people!
+                  Please, if someone wants to speak with me come forward and repeat hi pepper. ^enableThenGoto(restart_2)
+        u:(~hipepper) running face recognition module.
+                      Checking for a match in our database,
+                      please wait... ^first["~introduction ^enableThenGoto(notremebered) $faceRecognitionVar==0" "~welcomeback ^enableThenGoto(remember)"]
+
 
 proposal: $StopVar1 $StopVar2 $StopVar3 $StopVar4 %remember Do you remember my privacy enforcement program? Do you want me to refresh your memory about it or not?
     u1:(~confirm) %explanation I'm part of a privacy enforcement program to ensure your privacy to be kept safe when being in a video call.
