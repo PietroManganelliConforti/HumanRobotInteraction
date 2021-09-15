@@ -46,5 +46,9 @@ public class ListOfObj extends AppCompatActivity {
         });
     }
 
+    public List<String> getSelectedObjs(){
+        return selectedObjs;
+    }
+
 
 }

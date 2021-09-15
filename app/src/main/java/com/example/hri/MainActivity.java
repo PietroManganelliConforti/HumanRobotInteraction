@@ -92,47 +92,24 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
         //VAR face recognition, anything but 0 if recognized, 0 if not
         variable_face = qiChatbot.variable("faceRecognitionVar");
-        if(Math.random()>0.5) {
-            variable_face.async().setValue("0");
-        }else{
-            variable_face.async().setValue("1");
-        }
+        variable_face.async().setValue("0");
 
-        //VAR group event
+        //VAR face recognition, anything but 0 if recognized, 0 if not
         var_stop1 = qiChatbot.variable("StopVar1");
-        if(Math.random()<0.9) {
-            var_stop1.async().setValue("0"); //NO group
-        }else{
-            var_stop1.async().setValue("1");
-        }
+        var_stop1.async().setValue( "0" ); //(int)(Math.random() * 10) doesn't work, why?
 
-        //VAR i see you are talking with someone else
+        //VAR face recognition, anything but 0 if recognized, 0 if not
         var_stop2 = qiChatbot.variable("StopVar2");
-        double rand = Math.random();
-        var_stop2.async().setValue("1"); //0 is for the default case
-        if(rand >= 0.25 && rand < 0.5) {var_stop2.async().setValue("2");}
-        if(rand >= 0.5 && rand < 0.75) {var_stop2.async().setValue("3");}
-        if(rand >= 0.75) {var_stop2.async().setValue("4");}
+        var_stop2.async().setValue( String.valueOf(  (int)(Math.random() * 10)   ) );
 
-        //VAR pepper is unable to follow the user
+        //VAR face recognition, anything but 0 if recognized, 0 if not
         var_stop3 = qiChatbot.variable("StopVar3");
-        if(Math.random()>0.5) {
-            var_stop3.async().setValue("0");  //no ev
-        }else{
-            var_stop3.async().setValue("1");
-        }
+        var_stop3.async().setValue( String.valueOf(  (int)(Math.random() * 10)   ) );
 
-        //VAR pepper path
+        //VAR face recognition, anything but 0 if recognized, 0 if not
         var_stop4 = qiChatbot.variable("StopVar4");
-        if(Math.random()>0.5) {
-            var_stop4.async().setValue("0"); //no ev
-        }else{
-            var_stop4.async().setValue("1");
-        }
+        var_stop4.async().setValue( String.valueOf(  (int)(Math.random() * 10)   ) );
         //Log.i(String.valueOf(Math.random()), "Discussion started.");
-
-
-        all_events(var_stop1,var_stop2,var_stop3,var_stop4,variable_face);
 
         say.run();
 
@@ -140,7 +117,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         Log.i( TAG_EVENTS, "var_stop2: "+ var_stop2.getValue());
         Log.i( TAG_EVENTS, "var_stop3: "+ var_stop3.getValue());
         Log.i( TAG_EVENTS, "var_stop4: "+ var_stop4.getValue());
-        Log.i( TAG_EVENTS, "var_facerec: "+ variable_face.getValue());
 
         chat = ChatBuilder.with(qiContext)
                 .withChatbot(qiChatbot)
@@ -158,16 +134,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
             }
         });
 
-    }
-
-    public void all_events(QiChatVariable e1,QiChatVariable e2,
-                           QiChatVariable e3,QiChatVariable e4,
-                           QiChatVariable eFace){
-        e1.async().setValue("1");
-        e2.async().setValue("4");
-        e3.async().setValue("1");
-        e4.async().setValue("1");
-        eFace.async().setValue("0");
     }
 
     @Override
