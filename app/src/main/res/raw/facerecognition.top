@@ -3,6 +3,7 @@ topic: ~facerecognition()
 
 concept:(confirm) [yes "yes please" "would be awesome" confirm "of course"]
 concept:(rejection) [no "I don't care" "leave me be"]
+concept:(ready) ["i'm ready"]
 
 # Replying to speech
 proposal: %facerecogn before I ask you all the specifics for our program, I'd like to know if you
@@ -22,5 +23,14 @@ proposal: %facerecogn before I ask you all the specifics for our program, I'd li
 
 
 proposal: %facerecognition To allow me to remember your face, I have to ask you to look me in the eyes
-                            for a couple of seconds. Please hold still...WIPexecutionAnimation -- ok now
-                             I'll remember your face for the next time! Neat! ^gotoInTopic(startInitialize,initializebuildlistobj) #^execute()
+                            for a couple of seconds. Please hold still...WIPexecutionAnimation --
+                            ["^enableThenGoto(StopEvent4) $StopVar4 == 1" "^enableThenGoto(facerecognitionSucc)"] #^execute()
+
+proposal: %facerecognitionSucc ok now I'll remember your face for the next time! Neat! ^gotoInTopic(startInitialize,initializebuildlistobj)
+
+
+proposal: %StopEvent4 Sorry, but something went wrong, images are not clear. Please when you are ready and look me in the eyes
+            and tell me "i'm ready"
+        u1:(~ready) WIPexecutionAnimation --ok now I'll remember your face for the next time! Neat! ^gotoInTopic(startInitialize,initializebuildlistobj)
+        u1:(~rejection) ^enableThenGoto(repeatquestion)
+         u1:(e:Dialog/NotUnderstood) What did you say? Can you repeat,please? ^enableThenGoto(StopEvent4)
