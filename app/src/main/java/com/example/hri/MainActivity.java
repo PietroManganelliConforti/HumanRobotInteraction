@@ -1,6 +1,8 @@
 package com.example.hri;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -15,6 +17,7 @@ import com.aldebaran.qi.sdk.builder.QiChatbotBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
 import com.aldebaran.qi.sdk.builder.TopicBuilder;
 import com.aldebaran.qi.sdk.design.activity.RobotActivity;
+import com.aldebaran.qi.sdk.object.conversation.BaseQiChatExecutor;
 import com.aldebaran.qi.sdk.object.conversation.Chat;
 import com.aldebaran.qi.sdk.object.conversation.Listen;
 import com.aldebaran.qi.sdk.object.conversation.ListenResult;
@@ -134,6 +137,29 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
             }
         });
 
+    }
+
+    class ObjListExecutor extends BaseQiChatExecutor{
+        private final QiContext qiContext;
+        private List<String> selectedObjects;
+
+        protected ObjListExecutor(QiContext context) {
+            super(context);
+            this.qiContext = context;
+        }
+
+        @Override
+        public void runWith(List<String> params) {
+            Intent intent = new Intent(MainActivity.this, ListOfObj.class);
+            startActivity(intent);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        }
+
+        @Override
+        public void stop() {
+
+        }
     }
 
     @Override
