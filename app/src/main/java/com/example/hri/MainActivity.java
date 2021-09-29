@@ -64,17 +64,19 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private static final String TAG_EVENTS = "EventsInfo";
     private Chat chat;
     //private QiChatVariable faceRecognitionVar, StopVar;
-    private QiChatVariable variable_face,var_stop1;
+    private QiChatVariable variable_face;
+
     // Store the LookAt action.
     private LookAt lookAt1;
     private LookAt lookAt2;
+
     // Store the action execution future.
     private Future<Void> lookAtFuture;
     private Future<Void> animationFuture;
     private Future<Void> chatFuture;
     private QiChatbot qiChatbot;
 
-    private QiChatVariable var_stop2,var_stop3,var_stop4;
+    private QiChatVariable var_stop1, var_stop2,var_stop3,var_stop4;
 
     //private String recognized_or_not = "0"; //1 riconosciuto, 0 no
 
@@ -131,17 +133,17 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
         //VAR face recognition, anything but 0 if recognized, 0 if not
         variable_face = qiChatbot.variable("faceRecognitionVar");
-        if(Math.random()>0.5) {
+        if (Math.random() > 0.5) {
             variable_face.async().setValue("0");
-        }else{
+        } else {
             variable_face.async().setValue("1");
         }
 
         //VAR group event
         var_stop1 = qiChatbot.variable("StopVar1");
-        if(Math.random()<0.9) {
+        if (Math.random() < 0.9) {
             var_stop1.async().setValue("0"); //NO group
-        }else{
+        } else {
             var_stop1.async().setValue("1");
         }
 
@@ -149,29 +151,35 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         var_stop2 = qiChatbot.variable("StopVar2");
         double rand = Math.random();
         var_stop2.async().setValue("1"); //0 is for the default case
-        if(rand >= 0.25 && rand < 0.5) {var_stop2.async().setValue("2");}
-        if(rand >= 0.5 && rand < 0.75) {var_stop2.async().setValue("3");}
-        if(rand >= 0.75) {var_stop2.async().setValue("4");}
+        if (rand >= 0.25 && rand < 0.5) {
+            var_stop2.async().setValue("2");
+        }
+        if (rand >= 0.5 && rand < 0.75) {
+            var_stop2.async().setValue("3");
+        }
+        if (rand >= 0.75) {
+            var_stop2.async().setValue("4");
+        }
 
         //VAR pepper is unable to follow the user
         var_stop3 = qiChatbot.variable("StopVar3");
-        if(Math.random()>0.5) {
+        if (Math.random() > 0.5) {
             var_stop3.async().setValue("0");  //no ev
-        }else{
+        } else {
             var_stop3.async().setValue("1");
         }
 
         //VAR pepper path
         var_stop4 = qiChatbot.variable("StopVar4");
-        if(Math.random()>0.5) {
+        if (Math.random() > 0.5) {
             var_stop4.async().setValue("0"); //no ev
-        }else{
+        } else {
             var_stop4.async().setValue("1");
         }
         //Log.i(String.valueOf(Math.random()), "Discussion started.");
 
 
-        all_events(var_stop1,var_stop2,var_stop3,var_stop4,variable_face);
+        all_events(var_stop1, var_stop2, var_stop3, var_stop4, variable_face);
 
         Map<String, QiChatExecutor> executors = new HashMap<>();
 
@@ -191,11 +199,11 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
         say.run();
 
-        Log.i( TAG_EVENTS, "var_stop1: "+ var_stop1.getValue());
-        Log.i( TAG_EVENTS, "var_stop2: "+ var_stop2.getValue());
-        Log.i( TAG_EVENTS, "var_stop3: "+ var_stop3.getValue());
-        Log.i( TAG_EVENTS, "var_stop4: "+ var_stop4.getValue());
-        Log.i( TAG_EVENTS, "var_facerec: "+ variable_face.getValue());
+        Log.i(TAG_EVENTS, "var_stop1: " + var_stop1.getValue());
+        Log.i(TAG_EVENTS, "var_stop2: " + var_stop2.getValue());
+        Log.i(TAG_EVENTS, "var_stop3: " + var_stop3.getValue());
+        Log.i(TAG_EVENTS, "var_stop4: " + var_stop4.getValue());
+        Log.i(TAG_EVENTS, "var_facerec: " + variable_face.getValue());
 
         chat = ChatBuilder.with(qiContext)
                 .withChatbot(qiChatbot)
@@ -206,7 +214,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
             chat.removeAllOnStartedListeners();
         }
 
-        sendMessage();
+        //sendMessage();
 
         chatFuture = chat.async().run();
         chatFuture.thenConsume(future -> {
@@ -218,14 +226,31 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
     }
 
-    public void all_events(QiChatVariable e1,QiChatVariable e2,
-                           QiChatVariable e3,QiChatVariable e4,
-                           QiChatVariable eFace){
+    public void all_events(QiChatVariable e1, QiChatVariable e2,
+                           QiChatVariable e3, QiChatVariable e4,
+                           QiChatVariable eFace) {
         e1.async().setValue("1");
         e2.async().setValue("4");
         e3.async().setValue("1");
         e4.async().setValue("1");
         eFace.async().setValue("1");
+        eFace.async().setValue("1");
+    }
+
+    public void test_animation(QiContext qiContext) {
+        // ANIMATION
+        Animation myAnimation = AnimationBuilder.with(qiContext)
+                .withResources(R.raw.raise_left_hand_b002)
+                .build();
+
+        // Build the action.
+        Animate animate = AnimateBuilder.with(qiContext)
+                .withAnimation(myAnimation)
+                .build();
+
+        //animate.async().run().requestCancellation();
+
+        animate.run();
     }
 
     @Override
@@ -381,12 +406,9 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         startActivity(intent);
     }
 
-
-
-    public static void Print(boolean condition)
-    {
-        System.out.println(condition);
     }
-};
+
+
+//test_animation(qiContext);
 
 
