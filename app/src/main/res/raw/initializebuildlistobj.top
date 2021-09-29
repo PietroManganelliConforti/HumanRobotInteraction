@@ -12,9 +12,9 @@ proposal: %startInitialize Now, I'd like to register the objects that you would 
                         blur out during a video call. Let me explain it how this process works!
                         Since this is the first time I'm registering your list as a user, I will need
                         to see these objects that you want to blur out in the future. Are they around us at the moment?
-    u1:(~confirm)  Ok cool! ^gotoInTopic(buildlist,buildlistobj)
+    u1:(~confirm) %buildListJump  Ok cool! ^gotoInTopic(buildlist,buildlistobj)
     u1:(~rejection)  I see. In which room are these objects?
-        u2:(~room) Ok. Can you take me there so I can recognize and remember them for the future?
+        u2:(~room) %notthereyet Ok. Can you take me there so I can recognize and remember them for the future?
             u3:(~confirm) %letsgo Ok, you drive! ^execute(WalkExecutor)-- ^enableThenGoto(testiamo)
             u3:(~rejection) Ok. Sadly, this is an fundamental step for my privacy program, thus I cannot continue the registering
                             if we cannot go into that room. Want to go now or do you want to stop the registration?

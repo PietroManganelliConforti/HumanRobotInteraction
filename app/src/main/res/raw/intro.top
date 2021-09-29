@@ -9,18 +9,11 @@ concept:(welcomeback) ^rand["welcome back, I'm Pepper, a robot assistant!" "hey 
 concept:(hipepper) ["hi pepper" "hi pepper!"]
 concept:(info) ["can you give me more info" "can you give me more info please" "tell me more about it" "what privacy enforcement program?" explain info]
 concept:(confirm) [yes "yes please" "would be awesome" confirm "of course"]
+concept:(confirmAndUpdate) [yes "yes please" "would be awesome" confirm "of course" "remove objects" remove "I want to remove some objects" "add objects" add "I want to add some objects" "change list" "change some objects" change update "update the list" "change objects" "I want to change the list"]
 concept:(rejection) [no "I don't care" "leave me be"]
 concept:(faceRecognized) [1]
 concept:(faceNotRecognized) [0]
 concept:(stillInt) ["...hey are you still interested? i see you are talking to someone else"]
-
-#Example of an interruption ["~introduction ^enableThenGoto(update) $StopVar>0.99"]
- # ["As i can see you are a group of people! Please, if someone wants to speak with me
- # come forward and repeat hi pepper.^enableThenGoto(restart) $StopVar1>0" "^enableThenGoto(restart)"]
- #
-
-#proposal: %group_restart  $StopVar1=0 As i can see you are a group of people! Please, if someone wants to speak with me come forward and repeat hi pepper.
-#    u:(~hipepper) ^enableThenGoto(restart_2)
 
 proposal: %restart_2 ^empty #stiamo dando per scontato che l'utente faccia sempre eyecontact
     u:(~hipepper $StopVar1==1)  $StopVar1=0 Hi everyone! ^execute(WavingExecutor) As i can see you are a group of people!
@@ -29,7 +22,7 @@ proposal: %restart_2 ^empty #stiamo dando per scontato che l'utente faccia sempr
 
 proposal: %testiamoFace ^first["~introduction ^enableThenGoto(notremebered) $faceRecognitionVar==0" "~welcomeback ^enableThenGoto(remember)"]
 
-proposal: $StopVar1 $StopVar2 $StopVar3 $StopVar4 %remember Do you remember my privacy enforcement program? Do you want me to refresh your memory about it or not?
+proposal: $StopVar1 $StopVar2 $StopVar3 $StopVar4 %remember ^execute(TabletExecutor) Do you remember my privacy enforcement program? Do you want me to refresh your memory about it or not?
     u1:(~confirm) %explanation I'm part of a privacy enforcement program to ensure your privacy to be kept safe when being in a video call.
                   Giving me a list of objects you want to blur out from the video while being in a call, you can keep your privacy
                   safe. Is it clear? ^first["$StopVar2 == 1 ^enableThenGoto(StopEvent21) " "! stop2 is not 1!"]
@@ -40,7 +33,7 @@ proposal: $StopVar1 $StopVar2 $StopVar3 $StopVar4 %remember Do you remember my p
     u1:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(remember)
 
 proposal: %update Do you want to update any privacy information you already gave me in the past?["$StopVar2 == 2 ^enableThenGoto(StopEvent22)" "! Stop2 is not 2!"]
-        u2:(~confirm) enablethengotosomewhere #qui dovrà andarci solo l'aggiornamento della lista degli oggetti
+        u2:(~confirmAndUpdate) ok, let me guide you through this. ^enableThenGotoInTopic(updateObjs,updatelistobj)
         u2:(~rejection) ok then. Let me know if I can be of any help. Until then, have a nice day! ^enableThenGoto(bridge) #diamo per scontato che continui a fissarlo
         u2:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(update)
 
@@ -59,7 +52,7 @@ proposal: %notremebered  Do you want to be registered in our system for my priva
         u2:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(rejection)
         u2:(~rejection) ok sorry to have bothered you, have a nice day! ^enableThenGoto(bridge)
         u2:(~info) ^enableThenGoto(information)
-proposal:%bridge Hey, I see you looked at me. tell me "Hi Pepper" to start the conversation! ^enableThenGoto(restart_2)
+proposal:%bridge Hey, I see you looked at me. tell me 'Hi Pepper' to start the conversation! ^enableThenGoto(restart_2)
 
 proposal: %StopEvent21 ~stillInt $StopVar2 = 0
 u2:(~confirm) I was saying that ^enableThenGoto(explanation)
@@ -81,18 +74,3 @@ u2:(~confirm) I was saying that ^enableThenGoto(information)
 u2:(~rejection) ok sorry to have bothered you, have a nice day! ^enableThenGoto(bridge)
 u2:(e:Dialog/NotUnderstood) ^enableThenGoto(StopEvent24)
 
-
-#    u2:(~confirm) %info2 ok cool! I'm part of a privacy enforcement program to ensure your privacy to be kept safe when being in a video call.
-#                  If you allow me I can guide you with some questions to help you feel safer when being in a videocall,
-#                  blurring all the thing you don't want to show. How about that? Are you interested?
-#                  u3:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(info2)
-#                  u3:(~confirm) ok cool! ^gotoInTopic(facerecogn, facerecognition)
-#                  u3:(~rejection) ok sorry to have bothered you, have a nice day! ^enableThenGoto(bridge)
-#    u2:(~rejection) ok sorry to have bothered you, have a nice day! ^enableThenGoto(bridge)
-#    u2:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(StopEvent1)
-
-#proposal: %StopEvent21 ~stillInt
-
-#proposal: %StopEvent22 ~stillInt
-
-#proposal: %StopEvent23 ~stillInt

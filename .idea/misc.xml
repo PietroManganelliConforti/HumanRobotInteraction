@@ -5,6 +5,9 @@
       <map>
         <entry key="..\:/Users/MATTEO/AndroidStudioProjects/HRI_project/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.21614583333333334" />
         <entry key="..\:/Users/MATTEO/AndroidStudioProjects/HRI_project/app/src/main/res/drawable/ic_launcher_background.xml" value="0.21614583333333334" />
+        <entry key="..\:/Users/MATTEO/AndroidStudioProjects/HRI_project/app/src/main/res/layout/activity_list_of_obj.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/MATTEO/AndroidStudioProjects/HRI_project/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/MATTEO/AndroidStudioProjects/HRI_project/app/src/main/res/layout/listview_item.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

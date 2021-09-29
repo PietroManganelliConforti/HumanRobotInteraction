@@ -30,7 +30,7 @@ proposal: %facerecognitionSucc ok now I'll remember your face for the next time!
 
 
 proposal: %StopEvent4 Sorry, but something went wrong, images are not clear. Please when you are ready and look me in the eyes
-            and tell me "i'm ready".
+            and tell me 'i'm ready'.
         u1:(~ready) ok, hold still for a second. ^execute(TakePicExecutor) --ok now I'll remember your face for the next time! Neat! ^gotoInTopic(startInitialize,initializebuildlistobj)
         u1:(~rejection) ^enableThenGoto(repeatquestion)
          u1:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(StopEvent4)

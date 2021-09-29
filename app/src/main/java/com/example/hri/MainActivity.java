@@ -1,8 +1,11 @@
 package com.example.hri;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 
 import com.aldebaran.qi.Future;
 import com.aldebaran.qi.sdk.QiContext;
@@ -70,15 +73,10 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private Future<Void> animationFuture;
     private Future<Void> chatFuture;
     private QiChatbot qiChatbot;
-    private Map<String, Bookmark> bookmarksIntro;
-    private Map<String, Bookmark> bookmarksFaceRecogn;
-    private Map<String, Bookmark> bookmarksBuildList;
-    private Map<String, Bookmark> bookmarksInitialize;
+
     private QiChatVariable var_stop2,var_stop3,var_stop4;
 
     //private String recognized_or_not = "0"; //1 riconosciuto, 0 no
-
-    //Timer timer = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +107,10 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                 .withResource(R.raw.intro) // Set the topic resource.
                 .build(); // Build the topic.
 
+        Topic topicUpdate = TopicBuilder.with(qiContext) // Create the builder using the QiContext.
+                .withResource(R.raw.updatelistobj) // Set the topic resource.
+                .build(); // Build the topic.
+
         Topic topicFaceRecogn = TopicBuilder.with(qiContext) // Create the builder using the QiContext.
                 .withResource(R.raw.facerecognition) // Set the topic resource.
                 .build(); // Build the topic.
@@ -122,15 +124,9 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                 .withResource(R.raw.initializebuildlistobj) // Set the topic resource.
                 .build(); // Build the topic.
 
-        bookmarksIntro = topicIntro.getBookmarks();
-        bookmarksFaceRecogn = topicFaceRecogn.getBookmarks();
-        bookmarksBuildList = topicBuildList.getBookmarks();
-        bookmarksInitialize = topicInitialize.getBookmarks();
-
-
 
         qiChatbot = QiChatbotBuilder.with(qiContext)
-                .withTopic(topicIntro, topicFaceRecogn, topicInitialize, topicBuildList)
+                .withTopic(topicIntro,topicUpdate, topicFaceRecogn, topicInitialize, topicBuildList)
                 .build();
 
         //VAR face recognition, anything but 0 if recognized, 0 if not
@@ -186,8 +182,9 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         executors.put("WalkExecutor", new MyQiChatExecutor(qiContext, 3));
         executors.put("ScanExecutor", new MyQiChatExecutor(qiContext, 4));
         executors.put("ShowTabletExecutor", new MyQiChatExecutor(qiContext, 5));
+        executors.put("GoodbyeExecutor", new MyQiChatExecutor(qiContext, 6));
+        executors.put("TabletExecutor", new MyQiChatExecutor(qiContext, 7));
 
-        //executors.put("animationStopper", new MyQiChatExecutorStopper(qiContext, 5, lookAtFuture));
 
         // Set the executors to the qiChatbot
         qiChatbot.setExecutors(executors);
@@ -208,7 +205,8 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         if (chat != null) {
             chat.removeAllOnStartedListeners();
         }
-        //Future<Void> chatFuture = chat.async().run();
+
+        sendMessage();
 
         chatFuture = chat.async().run();
         chatFuture.thenConsume(future -> {
@@ -216,7 +214,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                 Log.e(TAG, "Discussion finished with error.", future.getError());
             }
         });
-
 
 
     }
@@ -228,7 +225,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         e2.async().setValue("4");
         e3.async().setValue("1");
         e4.async().setValue("1");
-        eFace.async().setValue("0");
+        eFace.async().setValue("1");
     }
 
     @Override
@@ -359,6 +356,29 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
             animate.run();
         }
+
+        else if(animationSelector==6){
+            Animation myAnimation = AnimationBuilder.with(qiContext)
+                    .withResources(R.raw.hello_a010)
+                    .build();
+
+            // Build the action.
+            Animate animate = AnimateBuilder.with(qiContext)
+                    .withAnimation(myAnimation)
+                    .build();
+
+            animate.run();
+        }
+
+        else if(animationSelector==7){
+            sendMessage();
+        }
+    }
+
+
+    public void sendMessage() {
+        Intent intent = new Intent(this, ListOfObj.class);
+        startActivity(intent);
     }
 
 

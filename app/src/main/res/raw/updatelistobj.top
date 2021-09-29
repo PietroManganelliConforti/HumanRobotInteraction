@@ -1,0 +1,26 @@
+topic: ~updatelistobj()
+concept:(introduction) ^rand["hello, I'm Pepper, a robot assistant." "hi, I'm Pepper, a robot assistant." "hey, I'm Pepper, a robot assistant." "good morning, I'm Pepper, a robot assistant."]
+concept:(welcomeback) ^rand["welcome back, I'm Pepper, a robot assistant!" "hey it's you again! I'm Pepper, a robot assistant!"]
+concept:(hipepper) ["hi pepper" "hi pepper!"]
+concept:(info) ["can you give me more info" "can you give me more info please" "tell me more about it" "what privacy enforcement program?" explain info]
+concept:(confirm) [yes "yes please" "would be awesome" confirm "of course"]
+concept:(rejection) [no "I don't care" "leave me be" "no please" don't "no we are not" "no I'm not" "no I am not" not]
+concept:(scan) ["scan again" "I want to scan again" scan again repeat "Pepper I want to scan again"]
+concept:(change) ["remove objects" remove "I want to remove some objects" "add objects" add "I want to add some objects" "change list" "change some objects" change update "update the list" "change objects" "I want to change the list"]
+concept:(finish) ["Pepper I'm finished" finish finished]
+proposal: %updateObjs In my memory I have already saved the list of objects I'm showing on my tablet for your profile. #animazione indica tablet
+                      Do you want to change the list or do you want to scan your place of interest again?
+    u1:(~change) %change Ok cool! ^enableThenGoto(changeListObj)
+    u1:(~scan) %scanagain Ok. Are we already in the place?
+        u2:(~confirm) ^gotoInTopic(buildListJump, initializebuildlistobj)
+        u2:(~rejection) ^gotoInTopic(notthereyet, initializebuildlistobj)
+
+proposal: %changeListObj What I'm showing you now on my tablet is the list of objects I detected in our previous meeting. Please,select the objects
+                         you want to add or remove by clicking on them When you are done, tell me 'Pepper I have finished'. If the object you are looking for is not here, we may need to scan again the place.
+                         If this is the case, just say 'Pepper I want to scan again'.
+    u1:(~scan): ^enableThenGoto(scanagain)
+    u1:(~finish): Thanks for the cooperation. I have updated your privacy informations. You can update the list of objects
+                  at anytime! Come talk to me if you want to. Can I ask you to leave a feedback answering a short survey to
+                  improve my services for the future?
+        u2:(~confirm) Thanks! #^gotoInTopic(feedback)
+        u2:(~rejection) Ok no worries. Thanks for your time, have a nice day! ^execute(GoodbyeExecutor)
