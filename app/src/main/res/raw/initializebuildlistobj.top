@@ -15,13 +15,15 @@ proposal: %startInitialize Now, I'd like to register the objects that you would 
     u1:(~confirm)  Ok cool! ^gotoInTopic(buildlist,buildlistobj)
     u1:(~rejection)  I see. In which room are these objects?
         u2:(~room) Ok. Can you take me there so I can recognize and remember them for the future?
-            u3:(~confirm) %letsgo Ok, you drive!--exe animation-- ["^enableThenGoto(StopEvent3) $StopVar3 == 1" "^gotoInTopic(buildlist,buildlistobj)"]
+            u3:(~confirm) %letsgo Ok, you drive! ^execute(WalkExecutor)-- ^enableThenGoto(testiamo)
             u3:(~rejection) Ok. Sadly, this is an fundamental step for my privacy program, thus I cannot continue the registering
                             if we cannot go into that room. Want to go now or do you want to stop the registration?
                 u4:(~stop) %stop Ok, then maybe it will be for another day. See you around! ^enableThenGotoInTopic(bridge,intro)
                 u4:(~letsgo) Thanks for understanding that. ^enableThenGoto(letsgo)
 
 proposal: %StopEvent3 i'm sorry, but i cannot go beyond this point! Maybe there is another way?
-    u2:(~confirm) ok cool! let's go there then ^gotoInTopic(buildlist,buildlistobj)
+    u2:(~confirm) ok cool! let's go there then! ^execute(WalkExecutor) ^gotoInTopic(buildlist,buildlistobj)
     u2:(~rejection) It's unfortunate, if you find another path come to find me. See you around! ^enableThenGotoInTopic(bridge,intro)
-     u2:(e:Dialog/NotUnderstood) What did you say? Can you repeat,please? ^enableThenGoto(StopEvent3)
+     u2:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(StopEvent3)
+
+proposal: %testiamo ^first["^enableThenGoto(StopEvent3) $StopVar3 == 1" "^gotoInTopic(buildlist,buildlistobj)"]

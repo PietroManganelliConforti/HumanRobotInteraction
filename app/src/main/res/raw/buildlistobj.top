@@ -1,6 +1,6 @@
 topic: ~buildlistobj()
 # Defining extra concepts out of words or group of words
-concept:(finish) ["I'm done" "I've finished" finished complete]
+concept:(finish) ["I'm done" "I've finished" finished complete finish]
 concept:(confirm) [yes "yes please" "would be awesome" confirm "of course" "yes they are"]
 concept:(rejection) [no "I don't care" "leave me be" "no they aren't" "I can't"]
 concept:(repeat) [repeat "Can you repeat" "scan again" "repeat scan" "can you repeat the scan?" "Pepper repeat the scan"]
@@ -8,8 +8,8 @@ concept:(feedback) [feedback "I want to send a feedback" "Pepper I want to send 
 # Replying to speech
 #u:(~hello) ~hello
 
-proposal: %buildlist Now I'll scan the room. Give me a minute... ---scanning--- Ok! The list of objects I detected are listed on my display.
-                     Which among these you want to blur out? You can select them by clicking. If you are ok with the objects I found, select them and tell me
+proposal: %buildlist Now I'll scan the room. Give me a minute... ^execute(ScanExecutor) Ok! The list of objects I detected are listed on my display.
+                     Which among these you want to blur out? You can select them by clicking directly on my tablet ^execute(ShowScanExecutor). If you are ok with the objects I found, select them and say
                       'I've finished' when you are done or click on the Ok button, otherwise ask me to repeat the scan.
 
     u1:(~finish) Thanks for the cooperation. From now on you are part of the privacy program. You can update the list of objects

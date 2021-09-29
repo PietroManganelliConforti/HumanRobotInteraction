@@ -180,7 +180,13 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         Map<String, QiChatExecutor> executors = new HashMap<>();
 
         // Map the executor name from the topic to our qiChatExecutor
-        executors.put("FaceRecognitionExecutor", new MyQiChatExecutor(qiContext));
+        executors.put("FaceRecognitionExecutor", new MyQiChatExecutor(qiContext, 0));
+        executors.put("WavingExecutor", new MyQiChatExecutor(qiContext, 1));
+        executors.put("TakePicExecutor", new MyQiChatExecutor(qiContext, 2));
+        executors.put("WalkExecutor", new MyQiChatExecutor(qiContext, 3));
+        executors.put("ScanExecutor", new MyQiChatExecutor(qiContext, 4));
+        executors.put("ShowTabletExecutor", new MyQiChatExecutor(qiContext, 5));
+
         //executors.put("animationStopper", new MyQiChatExecutorStopper(qiContext, 5, lookAtFuture));
 
         // Set the executors to the qiChatbot
@@ -202,7 +208,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         if (chat != null) {
             chat.removeAllOnStartedListeners();
         }
-        Future<Void> chatFuture = chat.async().run();
+        //Future<Void> chatFuture = chat.async().run();
 
         chatFuture = chat.async().run();
         chatFuture.thenConsume(future -> {
@@ -241,37 +247,25 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
     class MyQiChatExecutor extends BaseQiChatExecutor {
         private final QiContext qiContext;
-        private String TAG;
+        private int animationSelector;
+        //private String TAG;
 
-        MyQiChatExecutor(QiContext context) {
+        MyQiChatExecutor(QiContext context, int animationSelector) {
             super(context);
             this.qiContext = context;
+            this.animationSelector = animationSelector;
         }
 
         @Override
         public void runWith(List<String> params) {
-            boolean test = true;
+           boolean test = true;
 
             try {
-                animationFuture=FaceRecognitionAnimation(qiContext);
-                chatFuture.wait();
-                //while(test){ Print(animationFuture.isDone()); }
+                AnimationExecutor(qiContext, animationSelector);
 
-                while(test){
-                    while(animationFuture.isDone()){
-                    animationFuture.requestCancellation();
-                    animationFuture.notify();
-                    qiChatbot.goToBookmark(bookmarksIntro.get("notremembered"), AutonomousReactionImportance.HIGH, AutonomousReactionValidity.IMMEDIATE);
-//                    boolean notremeberedStatus = qiChatbot.bookmarkStatus("notremebered");
-//                    Print(notremeberedStatus);
-                        test=false;
-                    break;
-                    }
-                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
 
 
@@ -282,123 +276,91 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         }
 
 
-        private Future<Void> FaceRecognitionAnimation(QiContext qiContext) throws InterruptedException {
 
+    }
 
+    //private Future<Void> FaceRecognitionAnimation(QiContext qiContext) throws InterruptedException {
+    private void AnimationExecutor(QiContext qiContext, int animationSelector) throws InterruptedException {
+
+        if(animationSelector==0) {
             Animation myAnimation = AnimationBuilder.with(qiContext)
                     .withResources(R.raw.curious_a001)
                     .build();
+
             // Build the action.
             Animate animate = AnimateBuilder.with(qiContext)
                     .withAnimation(myAnimation)
                     .build();
 
-            animationFuture = animate.async().run();
-
-
-            return animationFuture;
-
-//            while(animationFuture.isDone()){
-//                animationFuture.requestCancellation();
-//                animationFuture.notify();
-//                break;
-//            }
-//
-//            // Get the Actuation service from the QiContext.
-//            Actuation actuation = qiContext.getActuation();
-//            Frame robotFrameK = actuation.robotFrame();
-//            Frame gazeFrame = actuation.gazeFrame();
-//            // Create a transform corresponding to a vector3 translation.
-//            Transform transform = TransformBuilder.create().fromTranslation(new Vector3(3,5,6));
-//
-//
-//            // Get the Mapping service from the QiContext.
-//            Mapping mapping = qiContext.getMapping();
-//
-//            // Create a FreeFrame with the Mapping service.
-//            FreeFrame targetFrame = mapping.makeFreeFrame();
-//
-//            // Update the target location relatively to Pepper's current location.
-//            //targetFrame.update(robotFrameK, transform, 0L); //per guardare cio' che voglio guardare, rispetto a dove è pepper ora, ho bisogno di una trasformazione "transform".
-//            targetFrame.update(robotFrameK, transform, 0L); //per guardare cio' che voglio guardare, rispetto a dove è pepper ora, ho bisogno di una trasformazione "transform".
-//
-//            // Create a LookAt action.
-//            lookAt1 = LookAtBuilder.with(qiContext) // Create the builder with the context.
-//                    .withFrame(targetFrame.frame()) // Set the target frame.
-//                    .build(); // Build the LookAt1 action.
-//
-//            // Set the LookAt policy to look with the head only.
-//            lookAt1.setPolicy(LookAtMovementPolicy.HEAD_ONLY);
-//
-//            // Run the LookAt action (a)synchronously.
-//            lookAtFuture = lookAt1.async().run();
-//            //lookAtFuture= lookAt1.async().run();
-//
-//
-//
-//            timer.schedule(new TimerTask() {
-//                @Override
-//                public void run() {
-//                    lookAtFuture.requestCancellation();
-//                    System.out.println(lookAtFuture.isDone());
-//
-//                }
-//            }, 5*1000);
-
-            }
+            animate.run();
 
         }
+        else if(animationSelector==1){
+            Animation myAnimation = AnimationBuilder.with(qiContext)
+                    .withResources(R.raw.hello_a010)
+                    .build();
 
-    class MyQiChatExecutorStopper extends BaseQiChatExecutor {
-        private final QiContext qiContext;
-        private String TAG;
-        private int time;
-        private Future<Void> future;
+            // Build the action.
+            Animate animate = AnimateBuilder.with(qiContext)
+                    .withAnimation(myAnimation)
+                    .build();
 
-        MyQiChatExecutorStopper(QiContext context, int time, Future<Void> future) {
-            super(context);
-            this.qiContext = context;
-            this.time = time;
-            this.future= future;
+            animate.run();
+
+        }
+        else if(animationSelector==2){
+            Animation myAnimation = AnimationBuilder.with(qiContext)
+                    .withResources(R.raw.take_pic_b002)
+                    .build();
+
+            // Build the action.
+            Animate animate = AnimateBuilder.with(qiContext)
+                    .withAnimation(myAnimation)
+                    .build();
+
+            animate.run();
         }
 
-        @Override
-        public void runWith(List<String> params) {
+        else if(animationSelector==3){
+            Animation myAnimation = AnimationBuilder.with(qiContext)
+                    .withResources(R.raw.walk_run_b001)
+                    .build();
 
-            sleepFunction(qiContext);
-//            try {
-//                System.out.println("sono qui prima dello sleep");
-//                chatFuture.wait;
-//                System.out.println("sono qui dopo dello sleep");
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            // Build the action.
+            Animate animate = AnimateBuilder.with(qiContext)
+                    .withAnimation(myAnimation)
+                    .build();
+
+            animate.run();
         }
 
-        private void animate(QiContext qiContext) {
+        else if(animationSelector==4){
+            Animation myAnimation = AnimationBuilder.with(qiContext)
+                    .withResources(R.raw.cautious_a001)
+                    .build();
+
+            // Build the action.
+            Animate animate = AnimateBuilder.with(qiContext)
+                    .withAnimation(myAnimation)
+                    .build();
+
+            animate.run();
         }
 
+        else if(animationSelector==5){
+            Animation myAnimation = AnimationBuilder.with(qiContext)
+                    .withResources(R.raw.show_tablet_a004)
+                    .build();
 
+            // Build the action.
+            Animate animate = AnimateBuilder.with(qiContext)
+                    .withAnimation(myAnimation)
+                    .build();
 
-        @Override
-        public void stop() {
-            // This is called when chat is canceled or stopped
+            animate.run();
         }
-
-
-        private void sleepFunction(QiContext qiContext )  {
-            try {
-                this.future.get(time, TimeUnit.SECONDS);
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (TimeoutException e) {
-                e.printStackTrace();
-            } finally {
-                this.future.requestCancellation();
-            }
-        }
-
     }
+
 
 
     public static void Print(boolean condition)
