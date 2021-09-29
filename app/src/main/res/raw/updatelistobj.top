@@ -8,7 +8,7 @@ concept:(rejection) [no "I don't care" "leave me be" "no please" don't "no we ar
 concept:(scan) ["scan again" "I want to scan again" scan again repeat "Pepper I want to scan again"]
 concept:(change) ["remove objects" remove "I want to remove some objects" "add objects" add "I want to add some objects" "change list" "change some objects" change update "update the list" "change objects" "I want to change the list"]
 concept:(finish) ["Pepper I'm finished" finish finished]
-proposal: %updateObjs In my memory I have already saved the list of objects I'm showing on my tablet for your profile. #animazione indica tablet
+proposal: %updateObjs In my memory I have already saved the list of objects I'm showing on my tablet for your profile. ^execute(TabletExecutor) #animazione indica tablet
                       Do you want to change the list or do you want to scan your place of interest again?
     u1:(~change) %change Ok cool! ^enableThenGoto(changeListObj)
     u1:(~scan) %scanagain Ok. Are we already in the place?

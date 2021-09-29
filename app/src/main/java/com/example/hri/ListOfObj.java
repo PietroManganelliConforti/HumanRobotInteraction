@@ -10,6 +10,7 @@ import android.widget.ListView;
 //import android.widget.Toolbar;
 import androidx.appcompat.widget.Toolbar;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ListOfObj extends AppCompatActivity {
@@ -39,8 +40,12 @@ public class ListOfObj extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedObjs.add(objNames[i]);
+                if (!Arrays.asList(selectedObjs).contains(objNames[i])) {
+                    selectedObjs.add(objNames[i]);
+                    //ListView item = (ListView) adapterView.getSelectedItem();
+                    //item.Select();
 
+                }
             }
         });
     }

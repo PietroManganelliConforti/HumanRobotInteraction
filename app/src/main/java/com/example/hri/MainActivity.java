@@ -77,6 +77,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private QiChatbot qiChatbot;
 
     private QiChatVariable var_stop1, var_stop2,var_stop3,var_stop4;
+    private int requestCode;
 
     //private String recognized_or_not = "0"; //1 riconosciuto, 0 no
 
@@ -192,6 +193,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         executors.put("ShowTabletExecutor", new MyQiChatExecutor(qiContext, 5));
         executors.put("GoodbyeExecutor", new MyQiChatExecutor(qiContext, 6));
         executors.put("TabletExecutor", new MyQiChatExecutor(qiContext, 7));
+        executors.put("TabletKillerExecutor", new MyQiChatExecutor(qiContext, 8));
 
 
         // Set the executors to the qiChatbot
@@ -396,14 +398,27 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         }
 
         else if(animationSelector==7){
-            sendMessage();
+            requestCode = openAppOnTablet();
         }
+
+        else if(animationSelector==8){
+             closeAppOnTablet(requestCode);
+        }
+
     }
 
 
-    public void sendMessage() {
+    public int openAppOnTablet() {
         Intent intent = new Intent(this, ListOfObj.class);
+        intent.putExtra("requestCode", 1);
+        int requestCode = getIntent().getExtras().getInt("requestCode");
         startActivity(intent);
+
+        return requestCode;
+    }
+
+    public void closeAppOnTablet(int requestCode) {
+        finishActivity(requestCode);
     }
 
     }
