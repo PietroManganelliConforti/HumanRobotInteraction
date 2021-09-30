@@ -59,5 +59,9 @@ public class ListOfObj extends AppCompatActivity {
         return selectedObjs;
     }
 
+    public void closeAppOnTablet(int requestCode) {
+        finishActivity(requestCode);
+    }
+
 
 }

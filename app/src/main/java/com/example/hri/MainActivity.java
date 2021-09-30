@@ -239,21 +239,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         eFace.async().setValue("1");
     }
 
-    public void test_animation(QiContext qiContext) {
-        // ANIMATION
-        Animation myAnimation = AnimationBuilder.with(qiContext)
-                .withResources(R.raw.raise_left_hand_b002)
-                .build();
-
-        // Build the action.
-        Animate animate = AnimateBuilder.with(qiContext)
-                .withAnimation(myAnimation)
-                .build();
-
-        //animate.async().run().requestCancellation();
-
-        animate.run();
-    }
 
     @Override
     public void onRobotFocusLost() {
@@ -402,7 +387,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         }
 
         else if(animationSelector==8){
-             closeAppOnTablet(requestCode);
+             //closeAppOnTablet(requestCode);
         }
 
     }
@@ -417,13 +402,9 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         return requestCode;
     }
 
-    public void closeAppOnTablet(int requestCode) {
-        finishActivity(requestCode);
-    }
 
     }
 
 
-//test_animation(qiContext);
 
 
