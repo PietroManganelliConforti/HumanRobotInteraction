@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 //import android.view.View;
 //import android.widget.AdapterView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 //import android.widget.Toolbar;
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +20,7 @@ public class ListOfObj extends AppCompatActivity {
     Toolbar mToolbar;
     ListView mListView;
     String[] objNames = {"Blackboard_1", "Desk_1", "Sofa_1", "Wardrobe_1"};
+    Button okButton;
 
     List<String> selectedObjs = new ArrayList<>();
 
@@ -35,6 +38,14 @@ public class ListOfObj extends AppCompatActivity {
         mToolbar= findViewById((R.id.toolbar));
         mToolbar.setTitle(getResources().getString(R.string.app_name));
         mListView= findViewById((R.id.listview));
+        okButton = findViewById((R.id.button));
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeAppOnTablet();
+            }
+        });
+        mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         MyAdapter myAdapter = new MyAdapter(ListOfObj.this,objNames,objs);
         mListView.setAdapter(myAdapter);
         mListView.setOnItemClickListener((adapterView, view, i, l) -> {
@@ -59,8 +70,8 @@ public class ListOfObj extends AppCompatActivity {
         return selectedObjs;
     }
 
-    public void closeAppOnTablet(int requestCode) {
-        finishActivity(requestCode);
+    public void closeAppOnTablet() {
+        finish();
     }
 
 
