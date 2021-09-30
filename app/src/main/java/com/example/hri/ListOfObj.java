@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
+//import android.view.View;
+//import android.widget.AdapterView;
 import android.widget.ListView;
 //import android.widget.Toolbar;
 import androidx.appcompat.widget.Toolbar;
@@ -19,7 +19,7 @@ public class ListOfObj extends AppCompatActivity {
     ListView mListView;
     String[] objNames = {"Blackboard_1", "Desk_1", "Sofa_1", "Wardrobe_1"};
 
-    List<String> selectedObjs = new ArrayList<String>();
+    List<String> selectedObjs = new ArrayList<>();
 
     int[] objs = {
             R.drawable.blackboard,
@@ -37,16 +37,21 @@ public class ListOfObj extends AppCompatActivity {
         mListView= findViewById((R.id.listview));
         MyAdapter myAdapter = new MyAdapter(ListOfObj.this,objNames,objs);
         mListView.setAdapter(myAdapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        mListView.setOnItemClickListener((adapterView, view, i, l) -> {
+            view.setSelected(!view.isSelected());
+            if (view.isSelected()){
                 if (!Arrays.asList(selectedObjs).contains(objNames[i])) {
                     selectedObjs.add(objNames[i]);
+                    //adapterView.getItemAtPosition(i).
                     //ListView item = (ListView) adapterView.getSelectedItem();
                     //item.Select();
 
                 }
+            }else{
+                if (Arrays.asList(selectedObjs).contains(objNames[i])) {
+                    selectedObjs.remove(objNames[i]);}
             }
+
         });
     }
 
