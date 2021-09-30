@@ -6,7 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 //import android.view.View;
 //import android.widget.AdapterView;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 //import android.widget.Toolbar;
@@ -46,24 +51,62 @@ public class ListOfObj extends AppCompatActivity {
             }
         });
         mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        MyAdapter myAdapter = new MyAdapter(ListOfObj.this,objNames,objs);
+        MyAdapter myAdapter = new MyAdapter(this,objNames,objs);
         mListView.setAdapter(myAdapter);
-        mListView.setOnItemClickListener((adapterView, view, i, l) -> {
-            view.setSelected(!view.isSelected());
-            if (view.isSelected()){
-                if (!Arrays.asList(selectedObjs).contains(objNames[i])) {
-                    selectedObjs.add(objNames[i]);
-                    //adapterView.getItemAtPosition(i).
-                    //ListView item = (ListView) adapterView.getSelectedItem();
-                    //item.Select();
-
+        mListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
+                if (b){
+                    if (!Arrays.asList(selectedObjs).contains(objNames[i])) {
+                        selectedObjs.add(objNames[i]);
+                    }
+                }else{
+                    if (Arrays.asList(selectedObjs).contains(objNames[i])) {
+                        selectedObjs.remove(objNames[i]);}
                 }
-            }else{
-                if (Arrays.asList(selectedObjs).contains(objNames[i])) {
-                    selectedObjs.remove(objNames[i]);}
+
+
             }
 
+            @Override
+            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+                //int idx = menuItem.getItemId();
+                menuItem.setChecked(!menuItem.isChecked());
+
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode actionMode) {
+
+            }
         });
+        //mListView.setOnItemClickListener((adapterView, view, i, l) -> {
+        //    view.setSelected(!view.isSelected());
+        //    if (view.isSelected()){
+        //        if (!Arrays.asList(selectedObjs).contains(objNames[i])) {
+        //            selectedObjs.add(objNames[i]);
+        //            //adapterView.getItemAtPosition(i).
+        //            //ListView item = (ListView) adapterView.getSelectedItem();
+        //            //item.Select();
+//
+        //        }
+        //    }else{
+        //        if (Arrays.asList(selectedObjs).contains(objNames[i])) {
+        //            selectedObjs.remove(objNames[i]);}
+        //    }
+//
+        //});
     }
 
     public List<String> getSelectedObjs(){
