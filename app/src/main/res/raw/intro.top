@@ -37,8 +37,10 @@ proposal:%remember Do you remember my privacy enforcement program? Do you want m
                   u2:(~confirm) ok, awesome. ^enableThenGoto(update)
                   u2:(~rejection) ok, let me repeat myself. ^enableThenGoto(explanation)
                   u2:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(explanation)
-    u1:(~rejection) ok, I see. Then Do you want to update any privacy information you already gave me in the past?["$StopVar2 == 2 ^enableThenGoto(StopEvent22)" "^enableThenGoto(update)"]
+    u1:(~rejection) ^empty #ok, I see. Then Do you want to update any privacy information you already gave me in the past?["$StopVar2 == 2 ^enableThenGoto(StopEvent22)" "^enableThenGoto(update)"]
     #u1:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(remember)
+
+#qui sopra è rotto.
 
 proposal: %update ^empty #Do you want to update any privacy information you already gave me in the past?["$StopVar2 == 2 ^enableThenGoto(StopEvent22)" " "]
         u2:(~confirmAndUpdate) ok, let me guide you through this. ^enableThenGotoInTopic(updateObjs,updatelistobj)
@@ -63,7 +65,9 @@ proposal: %notremebered  Do you want to be registered in our system for my priva
 proposal:%bridge Hey, I see you looked at me. tell me 'Hi Pepper' to start the conversation! ^enableThenGoto(restart_2)
 
 proposal: %StopEvent21 ~stillInt $StopVar2 = 0
-u2:(~confirm) I was saying that ^enableThenGoto(explanation)
+u2:(~confirm) I was saying that I'm part of a privacy enforcement program to ensure your privacy to be kept safe when being in a video call.
+              Giving me a list of objects you want to blur out from the video while being in a call,
+              you can keep your privacy safe. Is it clear? ^enableThenGoto(explanation)
 u2:(~rejection) ok sorry to have bothered you, have a nice day! ^enableThenGoto(bridge)
 u2:(e:Dialog/NotUnderstood) ^enableThenGoto(StopEvent21)
 

@@ -195,7 +195,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         }
         //Log.i(String.valueOf(Math.random()), "Discussion started.");
 
-        //all_events(var_stop1, var_stop2, var_stop3, var_stop4, variable_face);
+        all_events(var_stop1, var_stop2, var_stop3, var_stop4, variable_face);
 
 
         Map<String, QiChatExecutor> executors = new HashMap<>();
