@@ -27,6 +27,7 @@ public class ListOfObj extends AppCompatActivity {
     ListView mListView;
     String[] objNames = {"Blackboard_1", "Desk_1", "Sofa_1", "Wardrobe_1"};
     Button okButton;
+    int itemsSelectedCount=0;
 
     List<String> selectedObjs = new ArrayList<>();
 
@@ -58,14 +59,22 @@ public class ListOfObj extends AppCompatActivity {
         mListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
+                //itemsSelectedCount = toggleSelection(position, checked);
+                //mode.setTitle(itemsSelectedCount + " Messages Selected");
+                //mListView.getItemAtPosition(mListView.getCheckedItemPosition());
                 if (b){
                     if (!Arrays.asList(selectedObjs).contains(objNames[i])) {
                         selectedObjs.add(objNames[i]);
+
                     }
+
                 }else{
                     if (Arrays.asList(selectedObjs).contains(objNames[i])) {
-                        selectedObjs.remove(objNames[i]);}
+                        selectedObjs.remove(objNames[i]);
+
+                    }
                 }
+
 
 
             }
