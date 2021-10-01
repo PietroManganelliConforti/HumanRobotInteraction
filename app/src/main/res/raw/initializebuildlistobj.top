@@ -16,10 +16,13 @@ proposal: %startInitialize Now, I'd like to register the objects that you would 
     u1:(~rejection)  I see. In which room are these objects?
         u2:(~room) %notthereyet Ok. Can you take me there so I can recognize and remember them for the future?
             u3:(~confirm) %letsgo Ok, you drive! ^execute(WalkExecutor)-- ^enableThenGoto(testiamo)
-            u3:(~rejection) Ok. Sadly, this is an fundamental step for my privacy program, thus I cannot continue the registering
+            u3:(~rejection)%flagrejinit Ok. Sadly, this is an fundamental step for my privacy program, thus I cannot continue the registering
                             if we cannot go into that room. Want to go now or do you want to stop the registration?
                 u4:(~stop) %stop Ok, then maybe it will be for another day. See you around! ^enableThenGotoInTopic(bridge,intro)
                 u4:(~letsgo) Thanks for understanding that. ^enableThenGoto(letsgo)
+                u4:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(flagrejinit)
+            u3:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(notthereyet)
+    u1:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(startInitialize)
 
 proposal: %StopEvent3 i'm sorry, but i cannot go beyond this point! Maybe there is another way?
     u2:(~confirm) ok cool! let's go there then! ^execute(WalkExecutor) ^gotoInTopic(buildlist,buildlistobj)

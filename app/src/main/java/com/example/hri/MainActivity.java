@@ -63,6 +63,8 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private static final String TAG = "MyActivity";
     private static final String TAG_EVENTS = "EventsInfo";
     private Chat chat;
+    private Chat chat1;
+
     //private QiChatVariable faceRecognitionVar, StopVar;
     private QiChatVariable variable_face;
 
@@ -75,9 +77,13 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private Future<Void> animationFuture;
     private Future<Void> chatFuture;
     private QiChatbot qiChatbot;
+    private QiChatbot qiChatbot0;
+    private QiChatbot qiChatbot1;
 
-    private QiChatVariable var_stop1, var_stop2,var_stop3,var_stop4;
-    private int requestCode;
+    private QiChatVariable var_stop1, var_stop2,var_stop3,var_stop4,ChatBotDirection;
+    public static int requestCode;
+    private int ChatBotSelector = 0;//se a zero, andiamo in updatelistobj1. se a
+    private boolean RepeatSay = true;
 
     //private String recognized_or_not = "0"; //1 riconosciuto, 0 no
 
@@ -99,6 +105,8 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     @Override
     public void onRobotFocusGained(QiContext qiContext) {
 
+        printString("sto iniziando il focus gained");
+        //printValue(ChatBotSelector);
 
         Say say = SayBuilder.with(qiContext) // Create the builder with the context.
                 .withText("Hey, you got my attention. tell me \"Hi Pepper\" to start the conversation!") // Set the text to say.
@@ -113,6 +121,11 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         Topic topicUpdate = TopicBuilder.with(qiContext) // Create the builder using the QiContext.
                 .withResource(R.raw.updatelistobj) // Set the topic resource.
                 .build(); // Build the topic.
+/*
+        Topic topicUpdate1 = TopicBuilder.with(qiContext) // Create the builder using the QiContext.
+                .withResource(R.raw.updatelistobj1) // Set the topic resource.
+                .build(); // Build the topic.
+*/
 
         Topic topicFaceRecogn = TopicBuilder.with(qiContext) // Create the builder using the QiContext.
                 .withResource(R.raw.facerecognition) // Set the topic resource.
@@ -129,11 +142,14 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
 
         qiChatbot = QiChatbotBuilder.with(qiContext)
-                .withTopic(topicIntro,topicUpdate, topicFaceRecogn, topicInitialize, topicBuildList)
+                .withTopic(topicIntro, topicUpdate, topicFaceRecogn, topicInitialize, topicBuildList)
                 .build();
 
         //VAR face recognition, anything but 0 if recognized, 0 if not
         variable_face = qiChatbot.variable("faceRecognitionVar");
+        ChatBotDirection = qiChatbot.variable("ChatBotDirection");
+        if(RepeatSay){ChatBotDirection.async().setValue("0");}
+
         if (Math.random() > 0.5) {
             variable_face.async().setValue("0");
         } else {
@@ -179,8 +195,8 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         }
         //Log.i(String.valueOf(Math.random()), "Discussion started.");
 
+        //all_events(var_stop1, var_stop2, var_stop3, var_stop4, variable_face);
 
-        all_events(var_stop1, var_stop2, var_stop3, var_stop4, variable_face);
 
         Map<String, QiChatExecutor> executors = new HashMap<>();
 
@@ -199,13 +215,41 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         // Set the executors to the qiChatbot
         qiChatbot.setExecutors(executors);
 
-        say.run();
+        if(!RepeatSay){
+
+            if(variable_face.getValue()=="0"){
+                ChatBotDirection.setValue("2");
+                //printString("aaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                //printString(ChatBotDirection.getValue());
+                //printString("vvvvvvvvvvvvvvvvvv");
+                //printString(variable_face.getValue());
+                //printString("xxxxxxxxxxxxxxxxxxxxxxxxxx");
+
+            }
+            else if(variable_face.getValue()=="1"){
+                ChatBotDirection.setValue("1");
+                //printString("aaaaaaaaaaaaaaaaaaaaaaaaaaa1");
+                //printString(ChatBotDirection.getValue());
+                //printString("vvvvvvvvvvvvvvvvvv1");
+                //printString(variable_face.getValue());
+                //printString("xxxxxxxxxxxxxxxxxxxxxxxxxx1");
+
+            }
+
+        }
+
+        if (RepeatSay) {
+            say.run();
+            RepeatSay=false;
+        }
+
 
         Log.i(TAG_EVENTS, "var_stop1: " + var_stop1.getValue());
         Log.i(TAG_EVENTS, "var_stop2: " + var_stop2.getValue());
         Log.i(TAG_EVENTS, "var_stop3: " + var_stop3.getValue());
         Log.i(TAG_EVENTS, "var_stop4: " + var_stop4.getValue());
         Log.i(TAG_EVENTS, "var_facerec: " + variable_face.getValue());
+
 
         chat = ChatBuilder.with(qiContext)
                 .withChatbot(qiChatbot)
@@ -216,7 +260,6 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
             chat.removeAllOnStartedListeners();
         }
 
-        //sendMessage();
 
         chatFuture = chat.async().run();
         chatFuture.thenConsume(future -> {
@@ -225,17 +268,15 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
             }
         });
 
-
     }
 
     public void all_events(QiChatVariable e1, QiChatVariable e2,
                            QiChatVariable e3, QiChatVariable e4,
                            QiChatVariable eFace) {
-        e1.async().setValue("1");
-        e2.async().setValue("4");
-        e3.async().setValue("1");
-        e4.async().setValue("1");
-        eFace.async().setValue("1");
+        e1.async().setValue("0");
+        e2.async().setValue("2");
+        e3.async().setValue("0");
+        e4.async().setValue("0");
         eFace.async().setValue("1");
     }
 
@@ -254,154 +295,160 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
 
 
 
-    class MyQiChatExecutor extends BaseQiChatExecutor {
-        private final QiContext qiContext;
-        private int animationSelector;
-        //private String TAG;
+        class MyQiChatExecutor extends BaseQiChatExecutor {
+            private final QiContext qiContext;
+            private int animationSelector;
+            //private String TAG;
 
-        MyQiChatExecutor(QiContext context, int animationSelector) {
-            super(context);
-            this.qiContext = context;
-            this.animationSelector = animationSelector;
-        }
-
-        @Override
-        public void runWith(List<String> params) {
-           boolean test = true;
-
-            try {
-                AnimationExecutor(qiContext, animationSelector);
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            MyQiChatExecutor(QiContext context, int animationSelector) {
+                super(context);
+                this.qiContext = context;
+                this.animationSelector = animationSelector;
             }
+
+            @Override
+            public void runWith(List<String> params) {
+               boolean test = true;
+
+                try {
+                    AnimationExecutor(qiContext, animationSelector);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            @Override
+            public void stop() {
+                // This is called when chat is canceled or stopped
+                Log.i(TAG, "QiChatExecutor stopped");
+            }
+
+
+
+        }
+
+        private void AnimationExecutor(QiContext qiContext, int animationSelector) throws InterruptedException {
+
+            if(animationSelector==0) {
+                Animation myAnimation = AnimationBuilder.with(qiContext)
+                        .withResources(R.raw.curious_a001)
+                        .build();
+
+                // Build the action.
+                Animate animate = AnimateBuilder.with(qiContext)
+                        .withAnimation(myAnimation)
+                        .build();
+
+                animate.run();
+
+            }
+            else if(animationSelector==1){
+                Animation myAnimation = AnimationBuilder.with(qiContext)
+                        .withResources(R.raw.hello_a010)
+                        .build();
+
+                // Build the action.
+                Animate animate = AnimateBuilder.with(qiContext)
+                        .withAnimation(myAnimation)
+                        .build();
+
+                animate.run();
+
+            }
+            else if(animationSelector==2){
+                Animation myAnimation = AnimationBuilder.with(qiContext)
+                        .withResources(R.raw.take_pic_b002)
+                        .build();
+
+                // Build the action.
+                Animate animate = AnimateBuilder.with(qiContext)
+                        .withAnimation(myAnimation)
+                        .build();
+
+                animate.run();
+            }
+
+            else if(animationSelector==3){
+                Animation myAnimation = AnimationBuilder.with(qiContext)
+                        .withResources(R.raw.walk_run_b001)
+                        .build();
+
+                // Build the action.
+                Animate animate = AnimateBuilder.with(qiContext)
+                        .withAnimation(myAnimation)
+                        .build();
+
+                animate.run();
+            }
+
+            else if(animationSelector==4){
+                Animation myAnimation = AnimationBuilder.with(qiContext)
+                        .withResources(R.raw.cautious_a001)
+                        .build();
+
+                // Build the action.
+                Animate animate = AnimateBuilder.with(qiContext)
+                        .withAnimation(myAnimation)
+                        .build();
+
+                animate.run();
+            }
+
+            else if(animationSelector==5){
+                Animation myAnimation = AnimationBuilder.with(qiContext)
+                        .withResources(R.raw.show_tablet_a004)
+                        .build();
+
+                // Build the action.
+                Animate animate = AnimateBuilder.with(qiContext)
+                        .withAnimation(myAnimation)
+                        .build();
+
+                animate.run();
+            }
+
+            else if(animationSelector==6){
+                Animation myAnimation = AnimationBuilder.with(qiContext)
+                        .withResources(R.raw.hello_a010)
+                        .build();
+
+                // Build the action.
+                Animate animate = AnimateBuilder.with(qiContext)
+                        .withAnimation(myAnimation)
+                        .build();
+
+                animate.run();
+            }
+
+            else if(animationSelector==7){
+                requestCode = openAppOnTablet();
+            }
+
+            else if(animationSelector==8){
+            }
+
         }
 
 
-        @Override
-        public void stop() {
-            // This is called when chat is canceled or stopped
-            Log.i(TAG, "QiChatExecutor stopped");
+        public int openAppOnTablet() {
+            Intent intent = new Intent(this, ListOfObj.class);
+            intent.putExtra("requestCode", 1);
+            int requestCode = intent.getExtras().getInt("requestCode");
+            startActivity(intent);
+
+            return requestCode;
         }
 
 
-
-    }
-
-    //private Future<Void> FaceRecognitionAnimation(QiContext qiContext) throws InterruptedException {
-    private void AnimationExecutor(QiContext qiContext, int animationSelector) throws InterruptedException {
-
-        if(animationSelector==0) {
-            Animation myAnimation = AnimationBuilder.with(qiContext)
-                    .withResources(R.raw.curious_a001)
-                    .build();
-
-            // Build the action.
-            Animate animate = AnimateBuilder.with(qiContext)
-                    .withAnimation(myAnimation)
-                    .build();
-
-            animate.run();
-
-        }
-        else if(animationSelector==1){
-            Animation myAnimation = AnimationBuilder.with(qiContext)
-                    .withResources(R.raw.hello_a010)
-                    .build();
-
-            // Build the action.
-            Animate animate = AnimateBuilder.with(qiContext)
-                    .withAnimation(myAnimation)
-                    .build();
-
-            animate.run();
-
-        }
-        else if(animationSelector==2){
-            Animation myAnimation = AnimationBuilder.with(qiContext)
-                    .withResources(R.raw.take_pic_b002)
-                    .build();
-
-            // Build the action.
-            Animate animate = AnimateBuilder.with(qiContext)
-                    .withAnimation(myAnimation)
-                    .build();
-
-            animate.run();
+        public static void printValue(int value) {
+            Log.i("", String.valueOf(value));
         }
 
-        else if(animationSelector==3){
-            Animation myAnimation = AnimationBuilder.with(qiContext)
-                    .withResources(R.raw.walk_run_b001)
-                    .build();
-
-            // Build the action.
-            Animate animate = AnimateBuilder.with(qiContext)
-                    .withAnimation(myAnimation)
-                    .build();
-
-            animate.run();
+        public static void printString(String text) {
+            Log.i("", text);
         }
-
-        else if(animationSelector==4){
-            Animation myAnimation = AnimationBuilder.with(qiContext)
-                    .withResources(R.raw.cautious_a001)
-                    .build();
-
-            // Build the action.
-            Animate animate = AnimateBuilder.with(qiContext)
-                    .withAnimation(myAnimation)
-                    .build();
-
-            animate.run();
-        }
-
-        else if(animationSelector==5){
-            Animation myAnimation = AnimationBuilder.with(qiContext)
-                    .withResources(R.raw.show_tablet_a004)
-                    .build();
-
-            // Build the action.
-            Animate animate = AnimateBuilder.with(qiContext)
-                    .withAnimation(myAnimation)
-                    .build();
-
-            animate.run();
-        }
-
-        else if(animationSelector==6){
-            Animation myAnimation = AnimationBuilder.with(qiContext)
-                    .withResources(R.raw.hello_a010)
-                    .build();
-
-            // Build the action.
-            Animate animate = AnimateBuilder.with(qiContext)
-                    .withAnimation(myAnimation)
-                    .build();
-
-            animate.run();
-        }
-
-        else if(animationSelector==7){
-            requestCode = openAppOnTablet();
-        }
-
-        else if(animationSelector==8){
-             //closeAppOnTablet(requestCode);
-        }
-
-    }
-
-
-    public int openAppOnTablet() {
-        Intent intent = new Intent(this, ListOfObj.class);
-        intent.putExtra("requestCode", 1);
-        int requestCode = getIntent().getExtras().getInt("requestCode");
-        startActivity(intent);
-
-        return requestCode;
-    }
-
 
     }
 

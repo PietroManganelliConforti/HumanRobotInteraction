@@ -14,37 +14,45 @@ concept:(rejection) [no "I don't care" "leave me be"]
 concept:(faceRecognized) [1]
 concept:(faceNotRecognized) [0]
 concept:(stillInt) ["...hey are you still interested? i see you are talking to someone else"]
+concept:(finish) ["Pepper I'm finished" finish finished]
+concept:(repeat) [repeat "Can you repeat" "repeat scan" "can you repeat the scan?" "Pepper repeat the scan" "scan again" "I want to scan again" scan again "Pepper I want to scan again"]
+concept:(debug) [debug]
+
 
 proposal: %restart_2 ^empty #stiamo dando per scontato che l'utente faccia sempre eyecontact
-    u:(~hipepper $StopVar1==1)  $StopVar1=0 Hi everyone! ^execute(WavingExecutor) As i can see you are a group of people!
+    u:(~hipepper $StopVar1==1)  Hi everyone! ^execute(WavingExecutor) As i can see you are a group of people!
                   Please, if someone wants to speak with me come forward and repeat hi pepper. ^enableThenGoto(restart_2)
     u:(~hipepper) Running face recognition module. Checking for a match in our database,please wait... ^execute(FaceRecognitionExecutor) ^enableThenGoto(testiamoFace)
+    u:(~finish $ChatBotDirection==2) ^enableThenGotoInTopic(finishlist,buildlistobj)
+    u:(~repeat $ChatBotDirection==2) ^enableThenGotoInTopic(repeatscan,buildlistobj)
+    u:(~finish $ChatBotDirection==1) ^enableThenGotoInTopic(finishFirstCase,updatelistobj)
+    u:(~repeat $ChatBotDirection==1) ^enableThenGotoInTopic(scanFirstCase,updatelistobj)
+    u:(~debug) ^enableThenGotoInTopic(updateObjs,updatelistobj)
 
 proposal: %testiamoFace ^first["~introduction ^enableThenGoto(notremebered) $faceRecognitionVar==0" "~welcomeback ^enableThenGoto(remember)"]
 
-proposal: $StopVar1 $StopVar2 $StopVar3 $StopVar4 %remember Do you remember my privacy enforcement program? Do you want me to refresh your memory about it or not?
-    u1:(~confirm) %explanation I'm part of a privacy enforcement ^execute(TabletExecutor) program to ensure your privacy to be kept safe when being in a video call.
-                  Giving me a list of objects you want to blur out from the video while #^execute(TabletKillerExecutor)
-                  being in a call, you can keep your privacy safe. Is it clear? ^first["$StopVar2 == 1 ^enableThenGoto(StopEvent21) " "! stop2 is not 1!"]
+proposal:%remember Do you remember my privacy enforcement program? Do you want me to refresh your memory about it or not?
+    u:(~confirm) %explanation I'm part of a privacy enforcement program to ensure your privacy to be kept safe when being in a video call.
+                  Giving me a list of objects you want to blur out from the video while being in a call, you can keep your privacy safe. Is it clear? ^first["$StopVar2 == 1 ^enableThenGoto(StopEvent21) " " "]
                   u2:(~confirm) ok, awesome. ^enableThenGoto(update)
                   u2:(~rejection) ok, let me repeat myself. ^enableThenGoto(explanation)
                   u2:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(explanation)
-    u1:(~rejection) ok, I see. Then ^enableThenGoto(update)
-    u1:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(remember)
+    u1:(~rejection) ok, I see. Then Do you want to update any privacy information you already gave me in the past?["$StopVar2 == 2 ^enableThenGoto(StopEvent22)" "^enableThenGoto(update)"]
+    #u1:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(remember)
 
-proposal: %update Do you want to update any privacy information you already gave me in the past?["$StopVar2 == 2 ^enableThenGoto(StopEvent22)" "! Stop2 is not 2!"]
+proposal: %update ^empty #Do you want to update any privacy information you already gave me in the past?["$StopVar2 == 2 ^enableThenGoto(StopEvent22)" " "]
         u2:(~confirmAndUpdate) ok, let me guide you through this. ^enableThenGotoInTopic(updateObjs,updatelistobj)
         u2:(~rejection) ok then. Let me know if I can be of any help. Until then, have a nice day! ^enableThenGoto(bridge) #diamo per scontato che continui a fissarlo
         u2:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(update)
 
 proposal: %notremebered  Do you want to be registered in our system for my privacy enforcement program?
-                        If you don't know what program just ask me [ "$StopVar2 == 3 ^enableThenGoto(StopEvent23)" "! Stop2 is not 3!"]
+                        If you don't know what program just ask me [ "$StopVar2 == 3 ^enableThenGoto(StopEvent23)" " "]
     u1:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(notremebered)
     u1:(~confirm) ok cool! ^gotoInTopic(facerecogn, facerecognition)
     u1:(~info) %information I'm part of a privacy enforcement program to ensure your privacy to be kept safe when being in a video call.
                             If you allow me I can guide you with some questions to help you feel safer when being in a videocall,
                             blurring all the thing you don't want to show. How about that? Are you interested?
-                            ["$StopVar2 == 4 ^enableThenGoto(StopEvent24) " "! Stop2 is not 4!"]
+                            ["$StopVar2 == 4 ^enableThenGoto(StopEvent24) " " "]
         u2:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(information)
         u2:(~confirm) ok cool! ^gotoInTopic(facerecogn, facerecognition)
         u2:(~rejection) ok sorry to have bothered you, have a nice day! ^enableThenGoto(bridge)
@@ -60,7 +68,7 @@ u2:(~rejection) ok sorry to have bothered you, have a nice day! ^enableThenGoto(
 u2:(e:Dialog/NotUnderstood) ^enableThenGoto(StopEvent21)
 
 proposal: %StopEvent22 ~stillInt $StopVar2 = 0
-u2:(~confirm) I was asking you a question. ^enableThenGoto(update)
+u2:(~confirm) I was asking you a question. Do you want to update any privacy information you already gave me in the past? ^enableThenGoto(update)
 u2:(~rejection) ok sorry to have bothered you, have a nice day! ^enableThenGoto(bridge)
 u2:(e:Dialog/NotUnderstood) ^enableThenGoto(StopEvent22)
 

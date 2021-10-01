@@ -22,6 +22,7 @@ import java.util.List;
 
 public class ListOfObj extends AppCompatActivity {
 
+    int requestCode = MainActivity.requestCode;
     Toolbar mToolbar;
     ListView mListView;
     String[] objNames = {"Blackboard_1", "Desk_1", "Sofa_1", "Wardrobe_1"};
@@ -48,6 +49,7 @@ public class ListOfObj extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 closeAppOnTablet();
+
             }
         });
         mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);

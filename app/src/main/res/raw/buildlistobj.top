@@ -7,20 +7,27 @@ concept:(repeat) [repeat "Can you repeat" "scan again" "repeat scan" "can you re
 concept:(feedback) [feedback "I want to send a feedback" "Pepper I want to send a feedback"]
 # Replying to speech
 #u:(~hello) ~hello
+# ^execute(ShowScanExecutor)
 
-proposal: %buildlist Now I'll scan the room. Give me a minute... ^execute(ScanExecutor) Ok! The list of objects I detected are listed on my display.
-                     Which among these you want to blur out? You can select them by clicking directly on my tablet ^execute(ShowScanExecutor). If you are ok with the objects I found, select them and say
-                      'I've finished' when you are done or click on the Ok button, otherwise ask me to repeat the scan.
+proposal: %buildlist Now I'll scan the room. Give me a minute...^execute(ScanExecutor) Ok! The list of objects I detected are listed on my display.
+                     Which among these you want to blur out? You can select them by clicking directly on my tablet.
+                     If you are ok with the objects I found, select them and say 'I've finished' when you are done and click on the Ok button, otherwise press the button and ask me to repeat the scan.^enableThenGoto(connectionjump)
 
-    u1:(~finish) Thanks for the cooperation. From now on you are part of the privacy program. You can update the list of objects
+    u:(~finish) %finishlist Thanks for the cooperation. From now on you are part of the privacy program. You can update the list of objects
                  at anytime! Come talk to me if you want to. Can I ask you to leave a feedback answering a short survey to
                  improve my services for the future?
+#    u:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(buildlist)
+
         u2:(~confirm) Thanks! #^gotoInTopic(feedback)
         u2:(~rejection) Ok no worries. Thanks for participating to my privacy enforcement program, have a nice day!
-    u1:(~repeat) Ok, sorry for that. Sometimes it happens that my sensors miss some of the objects.
+ #       u2:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(finishlist)
+
+    u1:(~repeat) %repeatscan Ok, sorry for that. Sometimes it happens that my sensors miss some of the objects.
                 In which direction are the objects that I have missed? Please point in that direction with your fingertip and
                 tell me 'Pepper repeat the scan'. If we have already been through this, it may be that I don't have
                 the knowledge of the item you are trying to blur out. If that's the case, please report it through the
                 feedback survey saying 'Pepper I want to send a feedback'.
                 u2:(~repeat) ^enableThenGoto(buildlist)
                 u2:(~feedback) WIP #^gotoInTopic(feedback)  #TODO QR in a new topic
+
+proposal: %connectionjump ^execute(TabletExecutor)

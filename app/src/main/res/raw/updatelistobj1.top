@@ -1,0 +1,17 @@
+topic: ~updatelistobj1()
+concept:(introduction) ^rand["hello, I'm Pepper, a robot assistant." "hi, I'm Pepper, a robot assistant." "hey, I'm Pepper, a robot assistant." "good morning, I'm Pepper, a robot assistant."]
+concept:(welcomeback) ^rand["welcome back, I'm Pepper, a robot assistant!" "hey it's you again! I'm Pepper, a robot assistant!"]
+concept:(hipepper) ["hi pepper" "hi pepper!"]
+concept:(info) ["can you give me more info" "can you give me more info please" "tell me more about it" "what privacy enforcement program?" explain info]
+concept:(confirm) [yes "yes please" "would be awesome" confirm "of course"]
+concept:(rejection) [no "I don't care" "leave me be" "no please" don't "no we are not" "no I'm not" "no I am not" not]
+concept:(scan) ["scan again" "I want to scan again" scan again repeat "Pepper I want to scan again"]
+concept:(change) ["remove objects" remove "I want to remove some objects" "add objects" add "I want to add some objects" "change list" "change some objects" change update "update the list" "change objects" "I want to change the list"]
+concept:(finish) ["Pepper I'm finished" finish finished]
+
+proposal: %changeListObj  Thanks for the cooperation. I have updated your privacy informations. You can update the list of objects
+                           at anytime! Come talk to me if you want to. Can I ask you to leave a feedback answering a short survey to
+                           improve my services for the future?
+    #u1:(~scan): ^enableThenGotoInTopic(buildlist, buildlistobj)
+    u1:(~confirm) Thanks! #^gotoInTopic(feedback)
+    u1:(~rejection) Ok no worries. Thanks for your time, have a nice day! ^execute(GoodbyeExecutor)
