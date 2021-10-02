@@ -25,6 +25,7 @@
         android:layout_height="545dp"
         android:layout_below="@+id/toolbar"
         android:id="@+id/listview"
+        android:choiceMode="multipleChoice"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         />

@@ -18,7 +18,7 @@ public class MyAdapter extends ArrayAdapter<String> {
     Context mContext;
 
     public MyAdapter(@NonNull Context context, String[] objNames, int[] objs) {
-        super(context, R.layout.listview_item);
+        super(context, android.R.layout.simple_list_item_multiple_choice);
         this.names = objNames;
         this.objects = objs;
         this.mContext = context;

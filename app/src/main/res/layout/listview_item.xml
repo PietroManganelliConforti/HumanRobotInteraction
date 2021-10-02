@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:background="@drawable/my_selector">
+    android:background="@drawable/my_selector"
+    >
 
     <ImageView
         android:id="@+id/imageView"

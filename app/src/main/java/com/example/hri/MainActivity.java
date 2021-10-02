@@ -93,6 +93,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
         // Register the RobotLifecycleCallbacks to this Activity.
 
         QiSDK.register(this, this);
+        //openAppOnTablet();
     }
 
     @Override
