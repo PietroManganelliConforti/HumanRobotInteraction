@@ -24,9 +24,10 @@ proposal: %startInitialize Now, I'd like to register the objects that you would 
             u3:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(notthereyet)
     u1:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(startInitialize)
 
+proposal: %testiamo ^first["^enableThenGoto(StopEvent3) $StopVar3 == 1" "^gotoInTopic(buildlist,buildlistobj)"]
+
 proposal: %StopEvent3 i'm sorry, but i cannot go beyond this point! Maybe there is another way?
     u2:(~confirm) ok cool! let's go there then! ^execute(WalkExecutor) ^gotoInTopic(buildlist,buildlistobj)
     u2:(~rejection) It's unfortunate, if you find another path come to find me. See you around! ^enableThenGotoInTopic(bridge,intro)
      u2:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(StopEvent3)
 
-proposal: %testiamo ^first["^enableThenGoto(StopEvent3) $StopVar3 == 1" "^gotoInTopic(buildlist,buildlistobj)"]

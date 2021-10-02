@@ -25,6 +25,7 @@ proposal: %facerecogn before I ask you all the specifics for our program, I'd li
 proposal: %facerecognition To allow me to remember your face, I have to ask you to look me in the eyes
                             for a couple of seconds. Please hold still^execute(TakePicExecutor) ^enableThenGoto(testiamo0)
 
+proposal: %testiamo0 ^first["^enableThenGoto(StopEvent4) $StopVar4 == 1" "^enableThenGoto(facerecognitionSucc)"]
 
 proposal: %facerecognitionSucc ok now I'll remember your face for the next time! Neat! ^gotoInTopic(startInitialize,initializebuildlistobj)
 
@@ -35,4 +36,3 @@ proposal: %StopEvent4 Sorry, but something went wrong, images are not clear. Ple
         u1:(~rejection) ^enableThenGoto(repeatquestion)
          u1:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(StopEvent4)
 
-proposal: %testiamo0 ^first["^enableThenGoto(StopEvent4) $StopVar4 == 1" "^enableThenGoto(facerecognitionSucc)"]

@@ -71,7 +71,7 @@ public class ListOfObj extends AppCompatActivity {
                 view.setBackgroundColor(Color.WHITE);
                 selectedObjs.remove(objNames[i]);
             }
-            Log.i("My Activity", String.valueOf(selectedObjs));
+            //Log.i("My Activity", String.valueOf(selectedObjs));
         });
     }
 

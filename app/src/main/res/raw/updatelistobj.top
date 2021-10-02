@@ -32,10 +32,7 @@ proposal: %changeListObj What I will show you now on my tablet is the list of ob
 proposal: %diocesalvi ^empty
   u1:(~change) %change Ok cool! ^enableThenGoto(changeListObj)
   u1:(~scan) %scanagain Ok, sorry for that. Sometimes it happens that my sensors miss some of the objects. Let's try again.
-                        Let me ask this just to be sure... are we already in the place that we want to scan? ^enableThenGoto(diocesalvi2)
-#  u1:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(updateObjs)
-
-proposal: %diocesalvi2 ^empty
-  u1:(~confirm) ^enableThenGotoInTopic(buildListJump, initializebuildlistobj)
-  u1:(~rejection) ^enableThenGotoInTopic(notthereyet, initializebuildlistobj)
+                        Let me ask this just to be sure... are we already in the place that we want to scan?
+            u2:(~confirm) ^enableThenGotoInTopic(buildListJump, initializebuildlistobj)
+            u2:(~rejection) ^enableThenGotoInTopic(notthereyet, initializebuildlistobj)
 #  u1:(e:Dialog/NotUnderstood) What did you say? I didn't really understand what you just said. Let me repeat,maybe it can be helpful. ^enableThenGoto(scanagain)
